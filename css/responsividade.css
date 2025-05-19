@@ -1,0 +1,11 @@
+@media (max-width: 992px) {
+  .produto-card {
+    max-width: 48%; /* Dois por linha */
+  }
+}
+
+@media (max-width: 600px) {
+  .produto-card {
+    max-width: 100%; /* Um por linha */
+  }
+}
