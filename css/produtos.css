@@ -1,4 +1,5 @@
 .produtos {
+  
   text-align: center;
   padding: 50px 20px;
   display: flex;
@@ -67,4 +68,18 @@
 .btn-whatsapp:hover,
 .btn-ifood:hover {
   background: linear-gradient(to right, #1ebd57, #1aa34a);
+}
+
+.nosso {
+  font-size: 1.5rem;
+  color: #3e2f00;
+  margin-bottom: 10px;
+  font-style: bold;
+}
+
+.botao-ifood {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -40px;
 }
