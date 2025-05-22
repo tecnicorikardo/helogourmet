@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/slideshow.css">
   <!-- Font Awesome CDN -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css " integrity="sha512-2x6VZ1YF4M+EZ7V4V1z6U1B4FYT8DQkRL2kKkrX3D1N8mQgkdZ9JG6xQ6xXJ+h4qZJxF1LOfEFcVjXbPwLRTYnPvujpg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <title>Helo Gourmet Delícias</title>
@@ -15,11 +16,7 @@
 
   <!-- Estilos -->
   <link rel="stylesheet" href="css/reset.css" />
-  <link rel="stylesheet" href="css/header.css" />
-  <link rel="stylesheet" href="css/produtos.css" />
-  <link rel="stylesheet" href="css/redes-sociais.css" />
-  <link rel="stylesheet" href="css/footer.css" />
-  <link rel="stylesheet" href="css/ifood.css">
+  
 </head>
 <body>
 
@@ -38,9 +35,10 @@
       <p class="nosso">Compre pelo nosso</p><a href="https://www.ifood.com.br/delivery/rio-de-janeiro-rj/helo-gourmet-delicias-senador-camara/bdd931fa-857c-41ae-8dd7-a00e101d17ce?UTM_Medium=share" target="_blank" class="button-ifood"><img src="img/icon/icons8-ifood-96.png" alt=""></a>
       
       </div>
-
+        <h1><a href="#slide">Experimente nosso AÇAI! "Clique aqui"</a></h1>
       <h2>Nossos Sabores em Destaque</h2>
-      <div class="produto-card">
+      <div class="grid-container">
+        <div class="produto-card">
         <img src="img/ninhocomnutella.jpg" alt="Sacolé de Ninho com Nutella" />
         <div class="produto-info">
           <h3>🍦 Ninho com Nutella</h3>
@@ -132,6 +130,7 @@
     <a href="https://wa.me/5521976528124 " target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
   </div>
 </div>
+<div>
     </section>
 
     <section class="ifood">
@@ -153,6 +152,140 @@
       </div>
     </section>
   </main>
+    
+  <div id="slide" class="container">
+    <h1 class="slide-title">AÇAI</h1>
+    <p class="slide-subtitle">TEMOS AÇAI DE 400 E 500ML</p>
+    
+    <div class="slideshow-container">
+      <!-- Slides -->
+      <div class="slide fade">
+        <img src="img/slide1.jpg" alt="Slide 1">
+      </div>
+      
+      <div class="slide fade">
+        <img src="img/slide2.jpg" alt="Slide 2">
+      </div>
+      
+      <div class="slide fade">
+        <img src="img/slide3.jpg" alt="Slide 3">
+      </div>
+      
+      <div class="slide fade">
+        <img src="img/slide4.jpg" alt="Slide 4">
+      </div>
+
+      <div class="slide fade">
+        <img src="img/slide5.jpg" alt="Slide 4">
+      </div>
+
+      <div class="slide fade">
+        <img src="img/slide6.jpg" alt="Slide 4">
+      </div>
+
+      <div class="slide fade">
+        <img src="img/slide7.jpg" alt="Slide 4">
+      </div>
+
+      <div class="slide fade">
+        <img src="img/slide8.jpg" alt="Slide 4">
+      </div>
+      
+      <!-- Botões de navegação -->
+      <button class="prev" onclick="plusSlides(-1)">&#10094;</button>
+      <button class="next" onclick="plusSlides(1)">&#10095;</button>
+    </div>
+    
+    <!-- Indicadores de slide -->
+    <div class="dots-container">
+      <button class="dot" onclick="currentSlide(1)"></button>
+      <button class="dot" onclick="currentSlide(2)"></button>
+      <button class="dot" onclick="currentSlide(3)"></button>
+      <button class="dot" onclick="currentSlide(4)"></button>
+    </div>
+  </div>
+  
+  <script>
+    // Inicializa o slideshow
+    let slideIndex = 1;
+    showSlides(slideIndex);
+    
+    // Função para avançar ou retroceder slides
+    function plusSlides(n) {
+      showSlides(slideIndex += n);
+    }
+    
+    // Função para mostrar um slide específico
+    function currentSlide(n) {
+      showSlides(slideIndex = n);
+    }
+    
+    function showSlides(n) {
+      let i;
+      let slides = document.getElementsByClassName("slide");
+      let dots = document.getElementsByClassName("dot");
+      
+      // Verifica se há slides
+      if (slides.length === 0) return;
+      
+      // Loop circular
+      if (n > slides.length) {slideIndex = 1}
+      if (n < 1) {slideIndex = slides.length}
+      
+      // Esconde todos os slides
+      for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+      
+      // Remove a classe "active" de todos os indicadores
+      for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+      }
+      
+      // Mostra o slide atual e marca o indicador correspondente
+      slides[slideIndex-1].style.display = "block";
+      dots[slideIndex-1].className += " active";
+    }
+    
+    // Avança slides automaticamente a cada 5 segundos
+    setInterval(function() {
+      plusSlides(1);
+    }, 5000);
+    
+    // Verifica se as imagens estão carregando corretamente
+    window.onload = function() {
+      let images = document.querySelectorAll('.slide img');
+      
+      images.forEach(function(img) {
+        // Se a imagem não carregar, mostra um texto de placeholder
+        img.onerror = function() {
+          this.style.display = 'none';
+          this.parentNode.style.display = 'block';
+          this.parentNode.style.backgroundColor = '#f0f0f0';
+          
+          // Cria um elemento de texto para substituir a imagem
+          let placeholder = document.createElement('div');
+          placeholder.style.position = 'absolute';
+          placeholder.style.top = '50%';
+          placeholder.style.left = '50%';
+          placeholder.style.transform = 'translate(-50%, -50%)';
+          placeholder.style.color = '#999';
+          placeholder.style.fontSize = '1.5rem';
+          placeholder.style.fontWeight = 'bold';
+          placeholder.style.textAlign = 'center';
+          placeholder.style.width = '100%';
+          placeholder.style.padding = '0 20px';
+          placeholder.innerText = 'Adicione sua imagem aqui';
+          
+          this.parentNode.appendChild(placeholder);
+        };
+      });
+      
+      // Inicia o slideshow
+      showSlides(slideIndex);
+    };
+  </script>
+
 
   <footer>
     <p>&copy; 2025 Helo Gourmet Delícias. Todos os direitos reservados.</p>
