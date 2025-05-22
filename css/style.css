@@ -313,6 +313,7 @@ header img:hover {
   margin: 40px 0;
   position: relative;
   overflow: hidden;
+  padding-top: 0px;
 }
 
 .ifood::before {
@@ -375,6 +376,7 @@ header img:hover {
 .social {
   padding: 60px 0;
   text-align: center;
+  padding-top: 0px;
 }
 
 .social h2 {
