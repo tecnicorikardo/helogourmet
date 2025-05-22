@@ -1,8 +1,569 @@
-@import url('reset.css');
-@import url('header.css');
-@import url('produtos.css');
-@import url('redes-sociais.css');
-@import url('footer.css');
-@import url('ifood.css');
-@import url('responsividade.css');
-@import url('containerprincipal.css');
+/* =========================================
+   ESTILOS PRINCIPAIS - HELO GOURMET DELÍCIAS
+   =========================================
+   
+   Autor: Manus AI
+   Data: Maio 2025
+   
+   Índice:
+   1. Variáveis e Configurações Globais
+   2. Estilos Gerais
+   3. Header
+   4. Container Principal
+   5. Produtos
+   6. Botões e Links
+   7. iFood
+   8. Redes Sociais
+   9. Footer
+   10. Animações
+   11. Media Queries (Responsividade)
+   ========================================= */
+
+/* 1. VARIÁVEIS E CONFIGURAÇÕES GLOBAIS
+   ========================================= */
+:root {
+  /* Paleta de cores principal */
+  --cor-primaria: #ff6b6b;
+  --cor-primaria-clara: #ff8e8e;
+  --cor-primaria-escura: #e84a5f;
+  --cor-secundaria: #4a4e69;
+  --cor-secundaria-clara: #5c6178;
+  --cor-texto: #2b2d42;
+  --cor-texto-claro: #555b6e;
+  --cor-fundo: #f8f9fa;
+  --cor-fundo-card: #ffffff;
+  --cor-whatsapp: #25d366;
+  --cor-whatsapp-hover: #1ebd57;
+  --cor-ifood: #ea1d2c;
+  --cor-ifood-hover: #d41a27;
+  
+  /* Sombras */
+  --sombra-suave: 0 4px 15px rgba(0, 0, 0, 0.05);
+  --sombra-media: 0 8px 20px rgba(0, 0, 0, 0.08);
+  --sombra-forte: 0 12px 28px rgba(0, 0, 0, 0.12);
+  
+  /* Transições */
+  --transicao-rapida: 0.2s ease;
+  --transicao-media: 0.3s ease;
+  --transicao-lenta: 0.5s ease;
+  
+  /* Arredondamentos */
+  --borda-pequena: 8px;
+  --borda-media: 15px;
+  --borda-grande: 30px;
+}
+
+/* 2. ESTILOS GERAIS
+   ========================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
+  line-height: 1.6;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Melhorar acessibilidade de foco */
+a:focus,
+button:focus {
+  outline: 2px solid rgba(255, 107, 107, 0.5);
+  outline-offset: 2px;
+}
+
+/* 3. HEADER
+   ========================================= */
+header {
+  background: linear-gradient(135deg, #ff6b6b, #e84a5f);
+  text-align: center;
+  padding: 60px 20px;
+  box-shadow: var(--sombra-media);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Efeito de partículas flutuantes */
+header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 10%),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 10%),
+    radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 10%),
+    radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 10%);
+  opacity: 0.8;
+  z-index: 1;
+}
+
+header h1 {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+header h1 img {
+  max-width: 80%;
+  height: auto;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+  transition: transform var(--transicao-media);
+  animation: float 6s ease-in-out infinite;
+}
+
+/* 4. CONTAINER PRINCIPAL
+   ========================================= */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  position: relative;
+}
+
+/* 5. PRODUTOS
+   ========================================= */
+.produtos {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.produtos p img {
+  max-width: 90%;
+  margin: 0 auto 30px;
+  border-radius: var(--borda-media);
+  box-shadow: var(--sombra-suave);
+  transition: transform var(--transicao-media);
+}
+
+.produtos p img:hover {
+  transform: scale(1.02);
+  box-shadow: var(--sombra-media);
+}
+
+.nosso {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--cor-secundaria);
+  margin: 20px 0 10px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.botao-ifood {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+.botao-ifood img {
+  width: 60px;
+  height: auto;
+  transition: transform var(--transicao-media);
+}
+
+.botao-ifood img:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.produtos h2 {
+  font-size: 2.2rem;
+  margin: 40px 0;
+  color: var(--cor-secundaria);
+  position: relative;
+  display: inline-block;
+}
+
+/* Linha decorativa sob o título */
+.produtos h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: var(--cor-primaria);
+  border-radius: 2px;
+}
+
+/* Cards de produtos */
+.produto-card {
+  background: var(--cor-fundo-card);
+  border-radius: var(--borda-media);
+  overflow: hidden;
+  margin: 30px auto;
+  max-width: 800px;
+  box-shadow: var(--sombra-suave);
+  transition: all var(--transicao-media);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.produto-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--sombra-forte);
+}
+
+/* Efeito de brilho ao passar o mouse */
+.produto-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: var(--transicao-lenta);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.produto-card:hover::before {
+  left: 100%;
+}
+
+.produto-card img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  transition: transform var(--transicao-lenta);
+}
+
+.produto-card:hover img {
+  transform: scale(1.05);
+}
+
+.produto-info {
+  padding: 25px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.produto-info h3 {
+  font-size: 1.6rem;
+  color: var(--cor-primaria-escura);
+  margin-bottom: 15px;
+  transition: color var(--transicao-rapida);
+}
+
+.produto-card:hover .produto-info h3 {
+  color: var(--cor-primaria);
+}
+
+.produto-info p {
+  font-size: 1rem;
+  margin-bottom: 25px;
+  color: var(--cor-texto-claro);
+  flex-grow: 1;
+  line-height: 1.7;
+}
+
+/* 6. BOTÕES E LINKS
+   ========================================= */
+.btn-whatsapp,
+.btn-ifood {
+  display: inline-block;
+  padding: 14px 28px;
+  border-radius: var(--borda-grande);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all var(--transicao-media);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+.btn-whatsapp {
+  background: var(--cor-whatsapp);
+  color: white;
+}
+
+.btn-ifood {
+  background: var(--cor-ifood);
+  color: white;
+}
+
+/* Efeito de brilho nos botões */
+.btn-whatsapp::before,
+.btn-ifood::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: transform var(--transicao-media);
+  transform: skewX(-15deg);
+  z-index: -1;
+}
+
+.btn-whatsapp:hover,
+.btn-ifood:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-whatsapp:hover {
+  background: var(--cor-whatsapp-hover);
+}
+
+.btn-ifood:hover {
+  background: var(--cor-ifood-hover);
+}
+
+.btn-whatsapp:hover::before,
+.btn-ifood:hover::before {
+  transform: translateX(200%) skewX(-15deg);
+}
+
+.btn-whatsapp:active,
+.btn-ifood:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 7. IFOOD
+   ========================================= */
+.ifood {
+  text-align: center;
+  margin: 60px 0;
+  padding: 40px 20px;
+  background: linear-gradient(to right, rgba(234, 29, 44, 0.05), rgba(234, 29, 44, 0.1), rgba(234, 29, 44, 0.05));
+  border-radius: var(--borda-media);
+  position: relative;
+}
+
+.ifood h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: var(--cor-secundaria);
+  position: relative;
+  display: inline-block;
+}
+
+.ifood h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: var(--cor-ifood);
+  border-radius: 2px;
+}
+
+/* 8. REDES SOCIAIS
+   ========================================= */
+.social {
+  text-align: center;
+  margin: 60px 0;
+  padding: 40px 20px;
+}
+
+.social h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: var(--cor-secundaria);
+  position: relative;
+  display: inline-block;
+}
+
+.social h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: var(--cor-primaria);
+  border-radius: 2px;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.social-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transicao-media);
+  position: relative;
+}
+
+.social-links a img {
+  width: 50px;
+  height: auto;
+  transition: transform var(--transicao-media);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.social-links a:hover img {
+  transform: scale(1.2) rotate(5deg);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+/* 9. FOOTER
+   ========================================= */
+footer {
+  background: linear-gradient(135deg, var(--cor-primaria), var(--cor-primaria-escura));
+  text-align: center;
+  padding: 30px 20px;
+  color: white;
+  font-size: 1rem;
+  margin-top: 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.5), transparent);
+  opacity: 0.5;
+}
+
+footer p {
+  position: relative;
+  z-index: 1;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* 10. ANIMAÇÕES
+   ========================================= */
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.produtos h2,
+.ifood h2,
+.social h2 {
+  animation: fadeIn 1s ease-out;
+}
+
+.btn-whatsapp:hover,
+.btn-ifood:hover {
+  animation: pulse 1.5s infinite;
+}
+
+/* 11. MEDIA QUERIES (RESPONSIVIDADE)
+   ========================================= */
+@media (min-width: 768px) {
+  .produto-card {
+    flex-direction: row;
+  }
+  
+  .produto-card img {
+    width: 40%;
+    height: auto;
+    max-height: 400px;
+  }
+  
+  .produto-info {
+    width: 60%;
+  }
+}
+
+@media (max-width: 767px) {
+  header h1 img {
+    max-width: 90%;
+  }
+  
+  .produtos h2,
+  .ifood h2,
+  .social h2 {
+    font-size: 1.8rem;
+  }
+  
+  .produto-card {
+    margin: 30px 10px;
+  }
+  
+  .produto-info h3 {
+    font-size: 1.4rem;
+  }
+  
+  .btn-whatsapp,
+  .btn-ifood {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  header {
+    padding: 40px 15px;
+  }
+  
+  .produtos h2,
+  .ifood h2,
+  .social h2 {
+    font-size: 1.5rem;
+  }
+  
+  .produto-info h3 {
+    font-size: 1.3rem;
+  }
+  
+  .produto-info p {
+    font-size: 0.9rem;
+  }
+  
+  .social-links {
+    gap: 20px;
+  }
+}
