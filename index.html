@@ -3,290 +3,244 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/reset.css">
-  <link rel="stylesheet" href="css/slideshow.css">
-  <!-- Font Awesome CDN -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css " integrity="sha512-2x6VZ1YF4M+EZ7V4V1z6U1B4FYT8DQkRL2kKkrX3D1N8mQgkdZ9JG6xQ6xXJ+h4qZJxF1LOfEFcVjXbPwLRTYnPvujpg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <title>Helo Gourmet Delícias</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMt23cez/3paNdF+Z73e5eF5F5F5F5F5F5F5F5" crossorigin="anonymous">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css " integrity="sha512-AVB362qKE4Vw0gKt1WqaqV5f+5d/Lk5FVlC5J2pRWI5XkKl5XkYIb5U0kQJf5Q5V5f5F5F5F5F5F5F5F5F5F5F5F5" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins :wght@400;600&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" 
+  rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
   <!-- Estilos -->
   <link rel="stylesheet" href="css/reset.css" />
-  
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-
   <header>
-  <h1><img src="img/icon/fonthelogourmt.png" alt="fonte do header"></h1>
-  
-</header>
-  
+    <!--<h1><img src="img/icon/fonthelogourmt.png" alt="Helo Gourmet Delícias"></h1>-->
+    <h1 class="titulohelogourme">HELÔ GOURMET DELICIAS</h1>
+  </header>
 
   <main class="container">
-    <!-- seção produtos ####################################################################-->
-    <section class="produtos">
-      <div class="botao-ifood"> 
-      <p class="nosso">Compre pelo nosso</p><a href="https://www.ifood.com.br/delivery/rio-de-janeiro-rj/helo-gourmet-delicias-senador-camara/bdd931fa-857c-41ae-8dd7-a00e101d17ce?UTM_Medium=share" target="_blank" class="button-ifood"><img src="img/icon/icons8-ifood-96.png" alt=""></a>
-      
-      </div>
-        <h1><a href="#slide">Experimente nosso AÇAI! "Clique aqui"</a></h1>
+    <!-- Botão iFood -->
+    <div class="botao-ifood"> 
+      <p class="nosso">Compre pelo nosso</p>
+      <a href="https://www.ifood.com.br/helo-gourmet" target="_blank" rel="noopener" class="button-ifood">
+        <img src="img/icon/icons8-ifood-96.png" alt="iFood">
+      </a>
+    </div>
+
+    <!-- Slideshow de Produtos -->
+    <section class="produtos-slider">
       <h2>Nossos Sabores em Destaque</h2>
-      <div class="grid-container">
-        <div class="produto-card">
-        <img src="img/ninhocomnutella.jpg" alt="Sacolé de Ninho com Nutella" />
-        <div class="produto-info">
-          <h3>🍦 Ninho com Nutella</h3>
-          <p>"Descubra o irresistível sabor do nosso sacolé gourmet de Ninho com Nutella! Feito com uma lata de leite Ninho, Nutella cremosa, leite fresco, creme de leite e Leite Moça, essa combinação perfeita vai encantar o seu paladar. Cada sacolé é preparado com carinho, trazendo a cremosidade única do leite Ninho e o toque especial da Nutella, criando uma experiência doce e inesquecível. Uma sobremesa gelada que conquista corações em cada mordida!".</p>
-          <a href="https://wa.me/5521976528124 " target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
+      
+      <div class="slideshow-container">
+        <!-- Slide 1 - Ninho com Nutella -->
+        <div class="slide-produto fade">
+          <div class="produto-content">
+            <img src="img/ninhocomnutella.jpg" alt="Sacolé de Ninho com Nutella">
+            <div class="produto-info">
+              <h3>🍦 Ninho com Nutella</h3>
+              <p>"Descubra o irresistível sabor do nosso sacolé gourmet de Ninho com Nutella! Feito com uma lata de leite Ninho, Nutella cremosa, leite fresco, creme de leite e Leite Moça, essa combinação perfeita vai encantar o seu paladar. Cada sacolé é preparado com carinho, trazendo a cremosidade única do leite Ninho e o toque especial da Nutella, criando uma experiência doce e inesquecível. Uma sobremesa gelada que conquista corações em cada mordida!".</p>
+              <a href="https://wa.me/5521976528124" target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
+            </div>
+          </div>
         </div>
+
+        <!-- Slide 2 - KitKat -->
+        <div class="slide-produto fade">
+          <div class="produto-content">
+            <img src="img/kitkat.jpg" alt="Sacolé de KitKat">
+            <div class="produto-info">
+              <h3>🍫 Sacolé de KitKat</h3>
+              <p>"Descubra a indulgência do nosso sacolé gourmet de Kitkat! Feito com leite fresco, creme de leite, leite condensado, leite Ninho em pó e a exclusiva pasta Kitkat Original, cada detalhe foi pensado para trazer o máximo de sabor e cremosidade. O toque especial? Um Kitkat inteiro no fundo do sacolé, garantindo uma surpresa irresistível para os verdadeiros fãs do chocolate. Uma combinação perfeita para transformar seus momentos em puro prazer!"</p>
+              <a href="https://wa.me/5521976528124" target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3 - Oreo -->
+        <div class="slide-produto fade">
+          <div class="produto-content">
+            <img src="img/oreo.jpg" alt="Sacolé de Biscoito Oreo">
+            <div class="produto-info">
+              <h3>🍪 Sabor Biscoito Oreo</h3>
+              <p>Prepare-se para uma explosão de sabor com o nosso sacolé gourmet de Oreo! Feito com leite fresco, Leite Moça, creme de leite e pedaços crocantes do irresistível biscoito Oreo. O destaque? Um biscoito inteiro de Oreo cuidadosamente colocado dentro do sacolé, garantindo uma surpresa especial a cada mordida. Cremoso, crocante e cheio de sabor, é a sobremesa perfeita para os amantes de Oreo. Experimente e apaixone-se!</p>
+              <a href="https://wa.me/5521976528124" target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 4 - Paçoquita -->
+        <div class="slide-produto fade">
+          <div class="produto-content">
+            <img src="img/paçoquita.jpg" alt="Sacolé de Paçoquita">
+            <div class="produto-info">
+              <h3>🥜 Sabor Paçoquita</h3>
+              <p>Experimente o sabor inconfundível do nosso sacolé gourmet com a verdadeira Paçoquita Original! Feito com creme de leite, leite fresco, Leite Moça e o toque especial da autêntica Paçoquita, garantindo uma combinação perfeita de cremosidade e nostalgia. Cada detalhe é preparado com cuidado e carinho para oferecer uma experiência deliciosa e única. Uma verdadeira explosão de sabor que vai conquistar o seu coração!</p>
+              <a href="https://wa.me/5521976528124" target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 5 - Amendoim -->
+        <div class="slide-produto fade">
+          <div class="produto-content">
+            <img src="img/amendoim.jpg" alt="Sacolé de Amendoim">
+            <div class="produto-info">
+              <h3>🌰 Sabor Amendoim</h3>
+              <p>Descubra o sabor incrível do nosso sacolé gourmet de amendoim! Preparado com os melhores ingredientes: creme de leite, leite fresco, Leite Moça e amendoim, criando uma combinação irresistível de cremosidade e sabor. Cada detalhe é feito com muito carinho, garantindo uma experiência única e deliciosa. Ideal para quem ama o sabor marcante e reconfortante do amendoim. Experimente e surpreenda-se!</p>
+              <a href="https://wa.me/5521976528124" target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 6 - Açai com Nutella -->
+        <div class="slide-produto fade">
+          <div class="produto-content">
+            <img src="img/açaicomnutella.jpg" alt="Sacolé de Açaí com Nutella">
+            <div class="produto-info">
+              <h3>🧄 Açai com Nutella</h3>
+              <p>Experimente a irresistível fusão de sabores com nosso sacolé gourmet de Açaí e Nutella! Feito com os melhores ingredientes: açaí puro e cremoso, Nutella irresistível, Leite Moça, creme de leite e leite fresco. Cada detalhe é preparado com carinho para oferecer uma experiência única e inesquecível. Perfeito para refrescar e adoçar seus dias. Um verdadeiro prazer em cada mordida!</p>
+              <a href="https://wa.me/5521976528124" target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 7 - Morango Puro -->
+        <div class="slide-produto fade">
+          <div class="produto-content">
+            <img src="img/morangopuro.jpg" alt="Sacolé de Morango">
+            <div class="produto-info">
+              <h3>🍓 Morango Puro</h3>
+              <p>Sacolé Gourmet de Morango – Helô Gourmet. Sabor e frescor direto da fruta! Nosso sacolé de morango é preparado com leite, leite condensado, creme de leite e morangos de verdade, garantindo um sabor natural, cremoso e irresistível. Uma delícia geladinha que conquista no primeiro gole! Peça o seu e se refresque com qualidade e carinho.</p>
+              <a href="https://wa.me/5521976528124" target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 8 - Maracujá com Nutella -->
+        <div class="slide-produto fade">
+          <div class="produto-content">
+            <img src="img/maracuja com nutella.jpg" alt="Sacolé de Maracujá com Nutella">
+            <div class="produto-info">
+              <h3>🍹 Maracujá com Nutella</h3>
+              <p>Refrescante e irresistível! Nosso Sacolé Gourmet de Maracujá com Nutella é feito com leite, creme de leite, leite condensado e a polpa natural do maracujá, finalizado com uma deliciosa camada de Nutella. Uma explosão de sabor a cada mordida!</p>
+              <a href="https://wa.me/5521976528124" target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 9 - Amendoim com Nutella -->
+        <div class="slide-produto fade">
+          <div class="produto-content">
+            <img src="img/amendoimcomnutella.jpg" alt="Sacolé de Amendoim com Nutella">
+            <div class="produto-info">
+              <h3>🍫 Amendoim com Nutella</h3>
+              <p>Delicie-se com o sabor irresistível do nosso sacolé gourmet, que combina a cremosidade do leite condensado e do creme de leite com o toque especial da Nutella e o sabor marcante do amendoim moído. Uma explosão de sabores em cada mordida! Ideal para refrescar os dias quentes ou para adoçar qualquer momento. Experimente e apaixone-se!</p>
+              <a href="https://wa.me/5521976528124" target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 10 - Ninho com Oreo -->
+        <div class="slide-produto fade">
+          <div class="produto-content">
+            <img src="img/ninhocomoreo.jpg" alt="Sacolé de Ninho com Oreo">
+            <div class="produto-info">
+              <h3>🧀 Ninho com Oreo</h3>
+              <p>Sacolé Gourmet de Ninho com Oreo. Delicioso sacolé cremoso feito com leite condensado, creme de leite, leite integral e leite em pó Ninho. Para deixar ainda mais irresistível, vai um biscoito Oreo inteiro dentro! Uma explosão de sabor para quem ama sobremesas geladas com muito recheio.</p>
+              <a href="https://wa.me/5521976528124" target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botões de navegação -->
+        <button class="prev" onclick="plusSlides(-1)">&#10094;</button>
+        <button class="next" onclick="plusSlides(1)">&#10095;</button>
       </div>
 
-      <div class="produto-card">
-        <img src="img/kitkat.jpg" alt="Sacolé de KitKat" />
-        <div class="produto-info">
-          <h3>🍫 Sacolé de KitKat</h3>
-          <p>"Descubra a indulgência do nosso sacolé gourmet de Kitkat! Feito com leite fresco, creme de leite, leite condensado, leite Ninho em pó e a exclusiva pasta Kitkat Original, cada detalhe foi pensado para trazer o máximo de sabor e cremosidade. O toque especial? Um Kitkat inteiro no fundo do sacolé, garantindo uma surpresa irresistível para os verdadeiros fãs do chocolate. Uma combinação perfeita para transformar seus momentos em puro prazer!"</p>
-          <a href="https://wa.me/5521976528124 " target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
-        </div>
+      <!-- Indicadores de slide -->
+      <div class="dots-container">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+        <span class="dot" onclick="currentSlide(4)"></span>
+        <span class="dot" onclick="currentSlide(5)"></span>
+        <span class="dot" onclick="currentSlide(6)"></span>
+        <span class="dot" onclick="currentSlide(7)"></span>
+        <span class="dot" onclick="currentSlide(8)"></span>
+        <span class="dot" onclick="currentSlide(9)"></span>
+        <span class="dot" onclick="currentSlide(10)"></span>
       </div>
-    
-      <div class="produto-card">
-  <img src="img/oreo.jpg" alt="Sacolé de Biscoito Oreo" />
-  <div class="produto-info">
-    <h3>🍪 Sabor Biscoito Oreo</h3>
-    <p>Prepare-se para uma explosão de sabor com o nosso sacolé gourmet de Oreo! Feito com leite fresco, Leite Moça, creme de leite e pedaços crocantes do irresistível biscoito Oreo. O destaque? Um biscoito inteiro de Oreo cuidadosamente colocado dentro do sacolé, garantindo uma surpresa especial a cada mordida. Cremoso, crocante e cheio de sabor, é a sobremesa perfeita para os amantes de Oreo. Experimente e apaixone-se!</p>
-    <a href="https://wa.me/5521976528124 " target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
-  </div>
-</div>
-
-<div class="produto-card">
-  <img src="img/paçoquita.jpg" alt="Sacolé de Paçoquita" />
-  <div class="produto-info">
-    <h3>🥜 Sabor Paçoquita</h3>
-    <p>Experimente o sabor inconfundível do nosso sacolé gourmet com a verdadeira Paçoquita Original! Feito com creme de leite, leite fresco, Leite Moça e o toque especial da autêntica Paçoquita, garantindo uma combinação perfeita de cremosidade e nostalgia. Cada detalhe é preparado com cuidado e carinho para oferecer uma experiência deliciosa e única. Uma verdadeira explosão de sabor que vai conquistar o seu coração!</p>
-    <a href="https://wa.me/5521976528124 " target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
-  </div>
-</div>
-
-<div class="produto-card">
-  <img src="img/amendoim.jpg" alt="Sacolé de Amendoim" />
-  <div class="produto-info">
-    <h3>🌰 Sabor Amendoim</h3>
-    <p>Descubra o sabor incrível do nosso sacolé gourmet de amendoim! Preparado com os melhores ingredientes: creme de leite, leite fresco, Leite Moça e amendoim, criando uma combinação irresistível de cremosidade e sabor. Cada detalhe é feito com muito carinho, garantindo uma experiência única e deliciosa. Ideal para quem ama o sabor marcante e reconfortante do amendoim. Experimente e surpreenda-se!</p>
-    <a href="https://wa.me/5521976528124 " target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
-  </div>
-</div>
-<div class="produto-card">
-  <img src="img/açaicomnutella.jpg" alt="Sacolé de Açaí com Nutella" />
-  <div class="produto-info">
-    <h3>🧄 Açai com Nutella</h3>
-    <p>Experimente a irresistível fusão de sabores com nosso sacolé gourmet de Açaí e Nutella! Feito com os melhores ingredientes: açaí puro e cremoso, Nutella irresistível, Leite Moça, creme de leite e leite fresco. Cada detalhe é preparado com carinho para oferecer uma experiência única e inesquecível. Perfeito para refrescar e adoçar seus dias. Um verdadeiro prazer em cada mordida!</p>
-    <a href="https://wa.me/5521976528124 " target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
-  </div>
-</div>
-<!--<div class="produto-card">
-  <img src="img/" alt="Sacolé de Coco" />
-  <div class="produto-info">
-    <h3>🥥 Sabor Coco</h3>
-    <p>Sacolé Gourmet de Coco – Helô Gourmet. Uma explosão de cremosidade e sabor! Nosso sacolé de coco é feito com leite, creme de leite, leite condensado e coco ralado, resultando em uma textura suave e um gostinho caseiro que derrete na boca. Perfeito para quem ama o sabor clássico com um toque especial. Experimente essa delícia e se apaixone!</p>
-    <a href="https://wa.me/5521976528124 " target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
-  </div>
-</div>-->
-<div class="produto-card">
-  <img src="img/morangopuro.jpg" alt="Sacolé de Morango" />
-  <div class="produto-info">
-    <h3>🍓 Morango Puro</h3>
-    <p>Sacolé Gourmet de Morango – Helô Gourmet. Sabor e frescor direto da fruta! Nosso sacolé de morango é preparado com leite, leite condensado, creme de leite e morangos de verdade, garantindo um sabor natural, cremoso e irresistível. Uma delícia geladinha que conquista no primeiro gole! Peça o seu e se refresque com qualidade e carinho.</p>
-    <a href="https://wa.me/5521976528124 " target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
-  </div>
-</div>
-<div class="produto-card">
-  <img src="img/maracuja com nutella.jpg" alt="Sacolé de Maracujá com Nutella" />
-  <div class="produto-info">
-    <h3>🍹 Maracujá com Nutella</h3>
-    <p>Refrescante e irresistível! Nosso Sacolé Gourmet de Maracujá com Nutella é feito com leite, creme de leite, leite condensado e a polpa natural do maracujá, finalizado com uma deliciosa camada de Nutella. Uma explosão de sabor a cada mordida!</p>
-    <a href="https://wa.me/5521976528124 " target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
-  </div>
-</div>
-<div class="produto-card">
-  <img src="img/amendoimcomnutella.jpg" alt="Sacolé de Amendoim com Nutella" />
-  <div class="produto-info">
-    <h3>🍫 Amendoim com Nutella</h3>
-    <p>Delicie-se com o sabor irresistível do nosso sacolé gourmet, que combina a cremosidade do leite condensado e do creme de leite com o toque especial da Nutella e o sabor marcante do amendoim moído. Uma explosão de sabores em cada mordida! Ideal para refrescar os dias quentes ou para adoçar qualquer momento. Experimente e apaixone-se!</p>
-    <a href="https://wa.me/5521976528124 " target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
-  </div>
-</div>
-<div class="produto-card">
-  <img src="img/ninhocomoreo.jpg" alt="Sacolé de Ninho com Oreo" />
-  <div class="produto-info">
-    <h3>🧀 Ninho com Oreo</h3>
-    <p>Sacolé Gourmet de Ninho com Oreo. Delicioso sacolé cremoso feito com leite condensado, creme de leite, leite integral e leite em pó Ninho. Para deixar ainda mais irresistível, vai um biscoito Oreo inteiro dentro! Uma explosão de sabor para quem ama sobremesas geladas com muito recheio.</p>
-    <a href="https://wa.me/5521976528124 " target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
-  </div>
-</div>
-<div>
     </section>
 
-    <section class="ifood">
-      <h2>Peça também pelo iFood</h2>
-      <a href="https://www.ifood.com.br/delivery/rio-de-janeiro-rj/helo-gourmet-delicias-senador-camara/bdd931fa-857c-41ae-8dd7-a00e101d17ce?UTM_Medium=share " target="_blank" class="btn-ifood">Acessar iFood</a>
+    <!-- Slideshow de Açaí -->
+    <section id="açai" class="açai-slider">
+      <h2>Conheça nosso Açaí</h2>
+      <p class="slide-subtitle">TEMOS AÇAI DE 400 E 500ML</p>
+      
+      <div class="slideshow-container">
+        <!-- Slides Açaí -->
+        <div class="slide-açai fade">
+          <img src="img/slide1.jpg" alt="Açaí 1">
+        </div>
+        
+        <div class="slide-açai fade">
+          <img src="img/slide2.jpg" alt="Açaí 2">
+        </div>
+        
+        <div class="slide-açai fade">
+          <img src="img/slide3.jpg" alt="Açaí 3">
+        </div>
+
+        <!-- Botões de navegação -->
+        <button class="prev" onclick="plusAçaiSlides(-1)">&#10094;</button>
+        <button class="next" onclick="plusAçaiSlides(1)">&#10095;</button>
+      </div>
+
+      <!-- Indicadores de slide -->
+      <div class="dots-container">
+        <span class="dot-açai" onclick="currentAçaiSlide(1)"></span>
+        <span class="dot-açai" onclick="currentAçaiSlide(2)"></span>
+        <span class="dot-açai" onclick="currentAçaiSlide(3)"></span>
+      </div>
     </section>
 
+    <!-- Seção de Pedidos -->
+    <section class="pedidos">
+      <h2>Faça seu pedido</h2>
+      <div class="pedidos-botoes">
+        <a href="https://www.ifood.com.br/helo-gourmet" target="_blank" class="btn-ifood">
+          <i class="fab fa-ifood"></i> Pedir pelo iFood
+        </a>
+        <a href="https://wa.me/5521976528124" target="_blank" class="btn-whatsapp">
+          <i class="fab fa-whatsapp"></i> Pedir pelo WhatsApp
+        </a>
+      </div>
+    </section>
+
+    <!-- Redes Sociais -->
     <section class="social">
       <h2>Siga nossas redes sociais</h2>
       <div class="social-links">
-       
-       <a   style="width: 50px;" href="https://www.facebook.com/profile.php?id=61575803231654" target="_blank"><img src="img/icon/icons8-facebook-96.png" alt="facebook"></a>
-
-       <a   style="width: 50px;" href="https://www.instagram.com/helo.gourmet_delicias/?__pwa=1#" target="_blank"><img src="img/icon/icons8-instagram-96.png" alt="instagram"></a>
-  
-  
-</a>
-        
+        <a href="https://www.facebook.com/helo.gourmet" target="_blank" rel="noopener" title="Facebook Helo Gourmet">
+          <img src="img/icon/icons8-facebook-48.png" alt=" icon do facebook">
+        </a>
+        <a href="https://www.instagram.com/helo.gourmet" target="_blank" rel="noopener" title="Instagram Helo Gourmet">
+          <img src="img/icon/icons8-instagram-96.png" alt="icon do instagram">
+        </a>
       </div>
     </section>
   </main>
-    
-  <div id="slide" class="container">
-    <h1 class="slide-title">AÇAI</h1>
-    <p class="slide-subtitle">TEMOS AÇAI DE 400 E 500ML</p>
-    
-    <div class="slideshow-container">
-      <!-- Slides -->
-      <div class="slide fade">
-        <img src="img/slide1.jpg" alt="Slide 1">
-      </div>
-      
-      <div class="slide fade">
-        <img src="img/slide2.jpg" alt="Slide 2">
-      </div>
-      
-      <div class="slide fade">
-        <img src="img/slide3.jpg" alt="Slide 3">
-      </div>
-      
-      <div class="slide fade">
-        <img src="img/slide4.jpg" alt="Slide 4">
-      </div>
-
-      <div class="slide fade">
-        <img src="img/slide5.jpg" alt="Slide 4">
-      </div>
-
-      <div class="slide fade">
-        <img src="img/slide6.jpg" alt="Slide 4">
-      </div>
-
-      <div class="slide fade">
-        <img src="img/slide7.jpg" alt="Slide 4">
-      </div>
-
-      <div class="slide fade">
-        <img src="img/slide8.jpg" alt="Slide 4">
-      </div>
-      
-      <!-- Botões de navegação -->
-      <button class="prev" onclick="plusSlides(-1)">&#10094;</button>
-      <button class="next" onclick="plusSlides(1)">&#10095;</button>
-    </div>
-    
-    <!-- Indicadores de slide -->
-    <div class="dots-container">
-      <button class="dot" onclick="currentSlide(1)"></button>
-      <button class="dot" onclick="currentSlide(2)"></button>
-      <button class="dot" onclick="currentSlide(3)"></button>
-      <button class="dot" onclick="currentSlide(4)"></button>
-    </div>
-  </div>
-  
-  <script>
-    // Inicializa o slideshow
-    let slideIndex = 1;
-    showSlides(slideIndex);
-    
-    // Função para avançar ou retroceder slides
-    function plusSlides(n) {
-      showSlides(slideIndex += n);
-    }
-    
-    // Função para mostrar um slide específico
-    function currentSlide(n) {
-      showSlides(slideIndex = n);
-    }
-    
-    function showSlides(n) {
-      let i;
-      let slides = document.getElementsByClassName("slide");
-      let dots = document.getElementsByClassName("dot");
-      
-      // Verifica se há slides
-      if (slides.length === 0) return;
-      
-      // Loop circular
-      if (n > slides.length) {slideIndex = 1}
-      if (n < 1) {slideIndex = slides.length}
-      
-      // Esconde todos os slides
-      for (i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";
-      }
-      
-      // Remove a classe "active" de todos os indicadores
-      for (i = 0; i < dots.length; i++) {
-        dots[i].className = dots[i].className.replace(" active", "");
-      }
-      
-      // Mostra o slide atual e marca o indicador correspondente
-      slides[slideIndex-1].style.display = "block";
-      dots[slideIndex-1].className += " active";
-    }
-    
-    // Avança slides automaticamente a cada 5 segundos
-    setInterval(function() {
-      plusSlides(1);
-    }, 5000);
-    
-    // Verifica se as imagens estão carregando corretamente
-    window.onload = function() {
-      let images = document.querySelectorAll('.slide img');
-      
-      images.forEach(function(img) {
-        // Se a imagem não carregar, mostra um texto de placeholder
-        img.onerror = function() {
-          this.style.display = 'none';
-          this.parentNode.style.display = 'block';
-          this.parentNode.style.backgroundColor = '#f0f0f0';
-          
-          // Cria um elemento de texto para substituir a imagem
-          let placeholder = document.createElement('div');
-          placeholder.style.position = 'absolute';
-          placeholder.style.top = '50%';
-          placeholder.style.left = '50%';
-          placeholder.style.transform = 'translate(-50%, -50%)';
-          placeholder.style.color = '#999';
-          placeholder.style.fontSize = '1.5rem';
-          placeholder.style.fontWeight = 'bold';
-          placeholder.style.textAlign = 'center';
-          placeholder.style.width = '100%';
-          placeholder.style.padding = '0 20px';
-          placeholder.innerText = 'Adicione sua imagem aqui';
-          
-          this.parentNode.appendChild(placeholder);
-        };
-      });
-      
-      // Inicia o slideshow
-      showSlides(slideIndex);
-    };
-  </script>
-
 
   <footer>
     <p>&copy; 2025 Helo Gourmet Delícias. Todos os direitos reservados.</p>
   </footer>
+
+  <script src="js/script.js"></script>
 </body>
 </html>
