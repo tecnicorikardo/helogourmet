@@ -1,30 +1,70 @@
+<!-- filepath: c:\Users\ADM\Documents\CODIGOS\helogormetnew\index.html -->
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="page">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Helo Gourmet Delícias</title>
   
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css " integrity="sha512-AVB362qKE4Vw0gKt1WqaqV5f+5d/Lk5FVlC5J2pRWI5XkKl5XkYIb5U0kQJf5Q5V5f5F5F5F5F5F5F5F5F5F5F5F5" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-AVB362qKE4Vw0gKt1WqaqV5f+5d/Lk5FVlC5J2pRWI5XkKl5XkYIb5U0kQJf5Q5V5f5F5F5F5F5F5F5F5F5F5F5F5" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" 
-  rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
-  <!-- Estilos -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
   
+  <!-- Estilos -->
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
-  <header>
-    <!--<h1><img src="img/icon/fonthelogourmt.png" alt="Helo Gourmet Delícias"></h1>-->
-    <h1>HELÔ GOURMET DELICIAS</h1>
+<body class="page__body">
+  <header class="header">
+    <div class="top-bar">
+      <a href="#" class="top-bar__logo">
+        <h1>HELÔ GOURMET</h1>
+      </a>
+      <div class="top-bar__icons">
+        <a href="tel:+5521976528124" class="icon icon--phone" title="Telefone"></a>
+        <a href="#menu" class="icon icon--menu" title="Menu"></a>
+      </div>
+    </div>
   </header>
 
-  <main class="container">
+  <aside class="page__menu menu" id="menu">
+    <div class="menu__content">
+      <div class="top-bar menu__top">
+        <a href="#" class="top-bar__logo">
+          <h1>HELÔ GOURMET</h1>
+        </a>
+        <a href="#" class="icon icon--close" title="Fechar"></a>
+      </div>
+      <nav class="nav menu__nav">
+        <ul class="nav__list">
+          <li class="nav__item">
+            <a class="nav__link" href="#sabores">Sabores</a>
+          </li>
+          <li class="nav__item">
+            <a class="nav__link" href="#fotos">Fotos</a>
+          </li>
+          <li class="nav__item">
+            <a class="nav__link" href="#contato">Contato</a>
+          </li>
+          <li class="nav__item">
+            <a class="nav__link" href="#redes">Redes Sociais</a>
+          </li>
+        </ul>
+      </nav>
+      <a href="tel:+5521976528124" class="menu__phone-number">
+        (21) 97652-8124
+      </a>
+      <a href="https://wa.me/5521976528124" class="menu__call-to-order">
+        Pedir pelo WhatsApp
+      </a>
+    </div>
+  </aside>
+
+  <main class="main">
     <!-- Botão iFood -->
     <div class="botao-ifood"> 
       <p class="nosso">Compre pelo nosso</p>
@@ -34,7 +74,7 @@
     </div>
 
     <!-- Slideshow de Produtos -->
-    <section class="produtos-slider">
+    <section id="sabores" class="produtos-slider">
       <h2>Nossos Sabores em Destaque</h2>
       
       <div class="slideshow-container">
@@ -116,7 +156,7 @@
             <img src="img/morangopuro.jpg" alt="Sacolé de Morango">
             <div class="produto-info">
               <h3>🍓 Morango Puro</h3>
-              <p>Sacolé Gourmet de Morango – Helô Gourmet. Sabor e frescor direto da fruta! Nosso sacolé de morango é preparado com leite, leite condensado, creme de leite e morangos de verdade, garantindo um sabor natural, cremoso e irresistível. Uma delícia geladinha que conquista no primeiro gole! Peça o seu e se refresque com qualidade e carinho.</p>
+              <p>Sacolé Gourmet de Morango - Helô Gourmet. Sabor e frescor direto da fruta! Nosso sacolé de morango é preparado com leite, leite condensado, creme de leite e morangos de verdade, garantindo um sabor natural, cremoso e irresistível. Uma delícia geladinha que conquista no primeiro gole! Peça o seu e se refresque com qualidade e carinho.</p>
               <a href="https://wa.me/5521976528124" target="_blank" class="btn-whatsapp">Pedir no WhatsApp</a>
             </div>
           </div>
@@ -179,7 +219,7 @@
     </section>
 
     <!-- Slideshow de Açaí -->
-    <section id="açai" class="açai-slider">
+    <section id="fotos" class="açai-slider">
       <h2>Conheça nosso Açaí</h2>
       <p class="slide-subtitle">TEMOS AÇAI DE 400 E 500ML</p>
       
@@ -211,7 +251,7 @@
     </section>
 
     <!-- Seção de Pedidos -->
-    <section class="pedidos">
+    <section id="contato" class="pedidos">
       <h2>Faça seu pedido</h2>
       <div class="pedidos-botoes">
         <a href="https://www.ifood.com.br/helo-gourmet" target="_blank" class="btn-ifood">
@@ -224,7 +264,7 @@
     </section>
 
     <!-- Redes Sociais -->
-    <section class="social">
+    <section id="redes" class="social">
       <h2>Siga nossas redes sociais</h2>
       <div class="social-links">
         <a href="https://www.facebook.com/helo.gourmet" target="_blank" rel="noopener" title="Facebook Helo Gourmet">
@@ -237,7 +277,7 @@
     </section>
   </main>
 
-  <footer>
+  <footer class="footer">
     <p>&copy; 2025 Helo Gourmet Delícias. Todos os direitos reservados.</p>
   </footer>
 
