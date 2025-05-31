@@ -38,7 +38,12 @@
 
 .top-bar__logo {
   display: flex;
+  transition: transform 0.4s ease, color 0.3s ease;
+}
   
+.top-bar__logo:hover {
+  transform: scale(1.1); /* aumenta suavemente */
+  color: var(--primary-color);
 }
 
 
@@ -124,16 +129,22 @@
 }
 
 .nav__link {
+  display: inline-block; /* importante */
+  margin-left: 10px;
+  margin-top: 10px;
   text-decoration: none;
   color: var(--text-color);
   font-size: 1.2rem;
   font-weight: 600;
-  transition: color 0.3s;
+  transition: transform 0.4s ease, color 0.3s ease;
 }
 
 .nav__link:hover {
   color: var(--primary-color);
+  transform: scale(1.1); /* aumenta suavemente */
+  font-weight: 700;
 }
+
 
 .menu__phone-number {
   margin-top: auto;
@@ -487,10 +498,8 @@
     padding: 0;
     background-color: transparent;
   }
-  .menu__nav {
-    margin-left: 10px;
-    margin-top: 5px;
-  }
+  
+
   .menu__top {
     display: none;
   }
