@@ -36,12 +36,20 @@
   z-index: 100;
 }
 
+.top-bar__logo {
+  display: flex;
+  
+}
+
+
 .top-bar__logo h1 {
   font-family: 'Alfa Slab One', cursive;
   color: var(--primary-color);
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   text-transform: uppercase;
+  
 }
+  
 
 .top-bar__icons {
   display: flex;
@@ -155,6 +163,9 @@
 
 /* Botão iFood */
 .botao-ifood {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   margin: 30px 0;
 }
