@@ -1,8 +1,8 @@
 /* filepath: c:\Users\ADM\Documents\CODIGOS\helogormetnew\css\style.css */
 /* Estilos Gerais */
 :root {
-  --primary-color: #ff6b6b;
-  --secondary-color: #ff8e8e;
+  --primary-color: #f02727;
+  --secondary-color: #ee3d3d;
   --text-color: #333;
   --light-color: #fff;
   --dark-color: #222;
@@ -15,6 +15,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  
 }
 
 .page__body {
@@ -518,4 +519,12 @@
 /* Estilos para o JavaScript */
 .active {
   display: block;
+}
+
+.page__body {
+   background-image: url(..//img/fundomain.jpg);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
