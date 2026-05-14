@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard – Hélo Gourmet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --verde: #1a3a2a; --verde-claro: #2a5a40; --dourado: #c9a84c;
+      --fundo: #f0ece3; --branco: #fff; --texto: #2d2d2d; --cinza: #6b6b6b;
+      --borda: #e0dbd0; --danger: #c0392b; --success: #27ae60;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: var(--fundo); color: var(--texto); }
+
+    /* SIDEBAR */
+    .sidebar { position: fixed; top: 0; left: 0; width: 240px; height: 100vh; background: var(--verde); color: #fff; display: flex; flex-direction: column; z-index: 100; }
+    .sidebar-logo { padding: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .sidebar-logo h2 { font-size: 1.1rem; color: var(--dourado); }
+    .sidebar-logo p { font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-top: 2px; }
+    .sidebar-nav { flex: 1; padding: 1rem 0; }
+    .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1.5rem; color: rgba(255,255,255,0.75); cursor: pointer; transition: background 0.2s, color 0.2s; font-size: 0.9rem; border: none; background: none; width: 100%; text-align: left; }
+    .nav-item:hover, .nav-item.ativo { background: rgba(255,255,255,0.1); color: #fff; }
+    .nav-item.ativo { border-left: 3px solid var(--dourado); }
+    .nav-item span { font-size: 1.1rem; }
+    .sidebar-footer { padding: 1rem 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); }
+    .btn-sair { width: 100%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); border: none; padding: 0.65rem; border-radius: 8px; cursor: pointer; font-size: 0.85rem; transition: background 0.2s; }
+    .btn-sair:hover { background: rgba(255,255,255,0.2); }
+
+    /* MAIN */
+    .main { margin-left: 240px; min-height: 100vh; }
+    .topbar { background: var(--branco); padding: 1rem 2rem; border-bottom: 1px solid var(--borda); display: flex; align-items: center; justify-content: space-between; }
+    .topbar h1 { font-size: 1.2rem; color: var(--verde); }
+    .topbar-user { font-size: 0.85rem; color: var(--cinza); }
+    .conteudo { padding: 2rem; }
+
+    /* ABAS */
+    .aba { display: none; }
+    .aba.ativa { display: block; }
+
+    /* CARDS RESUMO */
+    .resumo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .resumo-card { background: var(--branco); border-radius: 12px; padding: 1.2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .resumo-card .label { font-size: 0.78rem; color: var(--cinza); text-transform: uppercase; letter-spacing: 0.08em; }
+    .resumo-card .valor { font-size: 1.8rem; font-weight: 700; color: var(--verde); margin-top: 0.3rem; }
+    .resumo-card .valor.dourado { color: var(--dourado); }
+
+    /* TABELA PEDIDOS */
+    .tabela-wrap { background: var(--branco); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; }
+    .tabela-header { padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--borda); display: flex; align-items: center; justify-content: space-between; }
+    .tabela-header h3 { font-size: 1rem; color: var(--verde); }
+    table { width: 100%; border-collapse: collapse; }
+    th { background: #f8f6f2; padding: 0.75rem 1rem; text-align: left; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--cinza); border-bottom: 1px solid var(--borda); }
+    td { padding: 0.85rem 1rem; font-size: 0.88rem; border-bottom: 1px solid #f5f2ee; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #faf8f4; }
+    .badge { display: inline-block; padding: 0.25rem 0.7rem; border-radius: 50px; font-size: 0.72rem; font-weight: 600; }
+    .badge-pendente { background: #fff3cd; color: #856404; }
+    .badge-pago { background: #d1e7dd; color: #0a3622; }
+    .badge-cancelado { background: #f8d7da; color: #842029; }
+    .badge-wpp { background: #d4edda; color: #155724; }
+    .btn-ver { background: var(--verde); color: #fff; border: none; padding: 0.35rem 0.8rem; border-radius: 6px; font-size: 0.78rem; cursor: pointer; transition: background 0.2s; }
+    .btn-ver:hover { background: var(--verde-claro); }
+
+    /* FORMULÁRIO PRATOS */
+    .secao-titulo-admin { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+    .secao-titulo-admin h2 { font-size: 1.1rem; color: var(--verde); }
+    .btn-novo { background: var(--dourado); color: var(--verde); font-weight: 700; border: none; padding: 0.65rem 1.4rem; border-radius: 50px; cursor: pointer; font-size: 0.88rem; transition: background 0.2s; }
+    .btn-novo:hover { background: #b8943e; }
+
+    /* GRID PRATOS ADMIN */
+    .pratos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.2rem; }
+    .prato-card-admin { background: var(--branco); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; }
+    .prato-card-admin img { width: 100%; height: 160px; object-fit: cover; }
+    .prato-card-admin .prato-info { padding: 1rem; }
+    .prato-card-admin h4 { font-size: 0.95rem; color: var(--verde); margin-bottom: 0.3rem; }
+    .prato-card-admin p { font-size: 0.8rem; color: var(--cinza); margin-bottom: 0.6rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .prato-card-admin .preco { font-weight: 700; color: var(--dourado); font-size: 1rem; }
+    .prato-acoes { display: flex; gap: 0.5rem; margin-top: 0.8rem; }
+    .btn-editar { flex: 1; background: var(--verde); color: #fff; border: none; padding: 0.5rem; border-radius: 8px; cursor: pointer; font-size: 0.82rem; transition: background 0.2s; }
+    .btn-editar:hover { background: var(--verde-claro); }
+    .btn-excluir { background: #fee2e2; color: var(--danger); border: none; padding: 0.5rem 0.8rem; border-radius: 8px; cursor: pointer; font-size: 0.82rem; transition: background 0.2s; }
+    .btn-excluir:hover { background: #fecaca; }
+    .toggle-ativo { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: var(--cinza); margin-top: 0.5rem; }
+    .toggle-ativo input { cursor: pointer; }
+
+    /* MODAL */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 300; display: none; align-items: center; justify-content: center; padding: 1rem; }
+    .modal-overlay.aberto { display: flex; }
+    .modal { background: var(--branco); border-radius: 16px; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+    .modal-header { padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--borda); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: var(--branco); z-index: 1; }
+    .modal-header h3 { font-size: 1.05rem; color: var(--verde); }
+    .btn-fechar-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--cinza); line-height: 1; }
+    .modal-corpo { padding: 1.5rem; }
+    .campo-form { margin-bottom: 1.2rem; }
+    .campo-form label { display: block; font-size: 0.82rem; font-weight: 600; color: #444; margin-bottom: 0.4rem; }
+    .campo-form input, .campo-form textarea, .campo-form select { width: 100%; padding: 0.7rem 1rem; border: 1.5px solid var(--borda); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
+    .campo-form input:focus, .campo-form textarea:focus { border-color: var(--verde); }
+    .campo-form textarea { resize: vertical; min-height: 80px; }
+    .campo-form .hint { font-size: 0.75rem; color: var(--cinza); margin-top: 0.3rem; }
+    .modal-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--borda); display: flex; gap: 0.8rem; justify-content: flex-end; }
+    .btn-cancelar { background: #f5f2ee; color: var(--texto); border: none; padding: 0.65rem 1.4rem; border-radius: 50px; cursor: pointer; font-size: 0.88rem; }
+    .btn-salvar { background: var(--verde); color: #fff; font-weight: 700; border: none; padding: 0.65rem 1.4rem; border-radius: 50px; cursor: pointer; font-size: 0.88rem; transition: background 0.2s; }
+    .btn-salvar:hover { background: var(--verde-claro); }
+    .btn-salvar:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* CONFIGURAÇÕES */
+    .config-card { background: var(--branco); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 1.5rem; margin-bottom: 1.5rem; }
+    .config-card h3 { font-size: 1rem; color: var(--verde); margin-bottom: 1.2rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--borda); }
+    .btn-salvar-config { background: var(--verde); color: #fff; font-weight: 700; border: none; padding: 0.75rem 2rem; border-radius: 50px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; margin-top: 0.5rem; }
+    .btn-salvar-config:hover { background: var(--verde-claro); }
+    .btn-upload-foto { display:inline-block; background:#f0ece3; color:var(--verde); border:2px dashed var(--borda); padding:0.75rem 1.2rem; border-radius:8px; cursor:pointer; font-size:0.88rem; font-weight:600; transition:background 0.2s,border-color 0.2s; width:100%; text-align:center; }
+    .btn-upload-foto:hover { background:#e8e2d8; border-color:var(--verde); }
+    .barra-progresso { width:100%; height:6px; background:#e0dbd0; border-radius:50px; overflow:hidden; }
+    .barra-fill { height:100%; background:var(--verde); border-radius:50px; width:0%; transition:width 0.3s; }
+    .toast.visivel { transform: translateY(0); opacity: 1; }
+    .toast.erro { background: var(--danger); }
+
+    /* MODAL PEDIDO DETALHE */
+    .pedido-itens { list-style: none; margin: 1rem 0; }
+    .pedido-itens li { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #f5f2ee; font-size: 0.9rem; }
+    .pedido-total { display: flex; justify-content: space-between; font-weight: 700; font-size: 1rem; padding-top: 0.8rem; color: var(--verde); }
+
+    @media (max-width: 768px) {
+      .sidebar { width: 100%; height: auto; position: relative; flex-direction: row; flex-wrap: wrap; }
+      .main { margin-left: 0; }
+      .sidebar-nav { display: flex; flex-direction: row; overflow-x: auto; padding: 0; }
+      .nav-item { padding: 0.75rem 1rem; white-space: nowrap; }
+      .sidebar-footer { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <h2>🍽️ Hélo Gourmet</h2>
+      <p>Painel Admin</p>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-item ativo" data-aba="pedidos"><span>📋</span> Pedidos</button>
+      <button class="nav-item" data-aba="cardapio"><span>🍽️</span> Cardápio</button>
+      <button class="nav-item" data-aba="config"><span>⚙️</span> Configurações</button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="btn-sair" id="btn-sair">🚪 Sair</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <h1 id="topbar-titulo">Pedidos</h1>
+      <span class="topbar-user" id="topbar-user">...</span>
+    </div>
+
+    <div class="conteudo">
+
+      <!-- ABA: PEDIDOS -->
+      <div class="aba ativa" id="aba-pedidos">
+        <div class="resumo-grid">
+          <div class="resumo-card">
+            <div class="label">Pedidos Hoje</div>
+            <div class="valor" id="res-hoje">0</div>
+          </div>
+          <div class="resumo-card">
+            <div class="label">Aguardando</div>
+            <div class="valor" id="res-pendentes">0</div>
+          </div>
+          <div class="resumo-card">
+            <div class="label">Pagos Online</div>
+            <div class="valor dourado" id="res-pagos">0</div>
+          </div>
+          <div class="resumo-card">
+            <div class="label">Faturamento Hoje</div>
+            <div class="valor dourado" id="res-faturamento">R$ 0</div>
+          </div>
+        </div>
+
+        <div class="tabela-wrap">
+          <div class="tabela-header">
+            <h3>Pedidos Recentes</h3>
+            <select id="filtro-status" style="padding:0.4rem 0.8rem;border:1.5px solid #ddd;border-radius:8px;font-size:0.85rem;outline:none;">
+              <option value="">Todos</option>
+              <option value="pendente">Pendente</option>
+              <option value="pago">Pago</option>
+              <option value="whatsapp">WhatsApp</option>
+              <option value="cancelado">Cancelado</option>
+            </select>
+          </div>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Data/Hora</th>
+                  <th>Itens</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>Ação</th>
+                </tr>
+              </thead>
+              <tbody id="tabela-pedidos-body">
+                <tr><td colspan="6" style="text-align:center;padding:2rem;color:#888;">Carregando pedidos...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABA: CARDÁPIO -->
+      <div class="aba" id="aba-cardapio">
+        <div class="secao-titulo-admin">
+          <h2>Gerenciar Cardápio</h2>
+          <button class="btn-novo" id="btn-novo-prato">+ Novo Prato</button>
+        </div>
+        <div class="pratos-grid" id="pratos-grid-admin">
+          <p style="color:#888;">Carregando pratos...</p>
+        </div>
+      </div>
+
+      <!-- ABA: CONFIGURAÇÕES -->
+      <div class="aba" id="aba-config">
+        <div class="config-card">
+          <h3>📱 Informações do Restaurante</h3>
+          <div class="campo-form">
+            <label>Nome do Restaurante</label>
+            <input type="text" id="cfg-nome" placeholder="Hélo Gourmet" />
+          </div>
+          <div class="campo-form">
+            <label>Subtítulo</label>
+            <input type="text" id="cfg-subtitulo" placeholder="Peça online ou pelo WhatsApp" />
+          </div>
+          <div class="campo-form">
+            <label>Telefone / WhatsApp (com DDI, ex: 5511999990000)</label>
+            <input type="text" id="cfg-telefone" placeholder="5511999990000" />
+          </div>
+          <div class="campo-form">
+            <label>Endereço</label>
+            <textarea id="cfg-endereco" placeholder="Rua Exemplo, 123&#10;Bairro – Cidade, UF"></textarea>
+          </div>
+          <div class="campo-form">
+            <label>Horários de Funcionamento</label>
+            <textarea id="cfg-horarios" placeholder="Seg a Sex: 11h30 – 22h&#10;Sáb e Dom: 12h – 23h"></textarea>
+          </div>
+          <button class="btn-salvar-config" id="btn-salvar-info">💾 Salvar Informações</button>
+        </div>
+
+        <div class="config-card">
+          <h3>🔗 Redes Sociais</h3>
+          <div class="campo-form">
+            <label>Instagram (URL completa)</label>
+            <input type="url" id="cfg-instagram" placeholder="https://instagram.com/helogourmet" />
+          </div>
+          <div class="campo-form">
+            <label>Facebook (URL completa)</label>
+            <input type="url" id="cfg-facebook" placeholder="https://facebook.com/helogourmet" />
+          </div>
+          <button class="btn-salvar-config" id="btn-salvar-redes">💾 Salvar Redes Sociais</button>
+        </div>
+
+        <div class="config-card">
+          <h3>💳 Mercado Pago</h3>
+          <div class="campo-form">
+            <label>URL do Backend (Render)</label>
+            <input type="url" id="cfg-backend-url" placeholder="https://seu-backend.onrender.com" />
+            <p class="hint">URL do servidor Node.js que processa pagamentos e recebe webhooks.</p>
+          </div>
+          <button class="btn-salvar-config" id="btn-salvar-mp">💾 Salvar</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL: NOVO/EDITAR PRATO -->
+  <div class="modal-overlay" id="modal-prato">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modal-prato-titulo">Novo Prato</h3>
+        <button class="btn-fechar-modal" id="btn-fechar-modal-prato">×</button>
+      </div>
+      <div class="modal-corpo">
+        <input type="hidden" id="prato-id" />
+        <div class="campo-form">
+          <label>Nome do Prato *</label>
+          <input type="text" id="prato-nome" placeholder="Ex: Filé de Frango Empanado" required />
+        </div>
+        <div class="campo-form">
+          <label>Descrição *</label>
+          <textarea id="prato-descricao" placeholder="Descreva o prato, ingredientes e acompanhamentos..." required></textarea>
+        </div>
+        <div class="campo-form">
+          <label>Preço (R$) *</label>
+          <input type="number" id="prato-preco" placeholder="0.00" step="0.01" min="0" required />
+        </div>
+        <div class="campo-form">
+          <label>Imagem do Prato</label>
+          <div class="upload-area" id="upload-area">
+            <div id="upload-preview-wrap" style="display:none;margin-bottom:0.8rem;">
+              <img id="upload-preview" src="" alt="Preview" style="width:100%;height:160px;object-fit:cover;border-radius:8px;" />
+            </div>
+            <label class="btn-upload-foto" for="input-foto-upload">
+              📷 Escolher foto do computador
+            </label>
+            <input type="file" id="input-foto-upload" accept="image/*" style="display:none;" />
+            <div id="upload-progresso" style="display:none;margin-top:0.6rem;">
+              <div class="barra-progresso"><div class="barra-fill" id="barra-fill"></div></div>
+              <p class="hint" id="upload-status">Enviando...</p>
+            </div>
+          </div>
+          <p class="hint" style="margin-top:0.5rem;">Ou cole uma URL diretamente:</p>
+          <input type="url" id="prato-imagem" placeholder="https://..." style="margin-top:0.4rem;" />
+        </div>
+        <div class="campo-form">
+          <label>Ordem de exibição</label>
+          <input type="number" id="prato-ordem" placeholder="1" min="1" value="1" />
+          <p class="hint">Número menor aparece primeiro no cardápio.</p>
+        </div>
+        <div class="campo-form" style="display:flex;align-items:center;gap:0.5rem;">
+          <input type="checkbox" id="prato-destaque" style="width:auto;" />
+          <label for="prato-destaque" style="margin:0;cursor:pointer;">Marcar como destaque ⭐</label>
+        </div>
+        <div class="campo-form" style="display:flex;align-items:center;gap:0.5rem;">
+          <input type="checkbox" id="prato-ativo" style="width:auto;" checked />
+          <label for="prato-ativo" style="margin:0;cursor:pointer;">Prato ativo (visível no cardápio)</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancelar" id="btn-cancelar-prato">Cancelar</button>
+        <button class="btn-salvar" id="btn-salvar-prato">💾 Salvar Prato</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: DETALHE DO PEDIDO -->
+  <div class="modal-overlay" id="modal-pedido">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Detalhes do Pedido</h3>
+        <button class="btn-fechar-modal" id="btn-fechar-modal-pedido">×</button>
+      </div>
+      <div class="modal-corpo" id="modal-pedido-corpo">
+        <!-- preenchido dinamicamente -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancelar" id="btn-fechar-pedido-footer">Fechar</button>
+        <button class="btn-salvar" id="btn-marcar-pago" style="background:#27ae60;">✅ Marcar como Pago</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut }
+      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import {
+      getFirestore, collection, doc, getDocs, getDoc, addDoc, setDoc,
+      updateDoc, deleteDoc, onSnapshot, query, orderBy, where, Timestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyARUPJBEiVdkYh6De-H9EYtq6L77vFPs0A",
+      authDomain: "cardapiohelogourmet.firebaseapp.com",
+      projectId: "cardapiohelogourmet",
+      storageBucket: "cardapiohelogourmet.firebasestorage.app",
+      messagingSenderId: "968993366150",
+      appId: "1:968993366150:web:327fb9b8ae9bb58fe7f107"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // ── Cloudinary config
+    const CLOUDINARY_CLOUD = 'du8sfxuqx';
+    const CLOUDINARY_PRESET = 'cardapio_upload';
+
+    // ── Upload de imagem para Cloudinary (unsigned)
+    document.getElementById('input-foto-upload').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      // Preview local imediato
+      const reader = new FileReader();
+      reader.onload = ev => {
+        document.getElementById('upload-preview').src = ev.target.result;
+        document.getElementById('upload-preview-wrap').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+
+      // Upload para Cloudinary via XMLHttpRequest (para ter progresso)
+      const progresso = document.getElementById('upload-progresso');
+      const barraFill = document.getElementById('barra-fill');
+      const status = document.getElementById('upload-status');
+      progresso.style.display = 'block';
+      barraFill.style.width = '0%';
+      status.textContent = 'Enviando...';
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CLOUDINARY_PRESET);
+      formData.append('folder', 'cardapio');
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`);
+
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const pct = Math.round((e.loaded / e.total) * 100);
+          barraFill.style.width = pct + '%';
+          status.textContent = `Enviando... ${pct}%`;
+        }
+      };
+
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          const resp = JSON.parse(xhr.responseText);
+          document.getElementById('prato-imagem').value = resp.secure_url;
+          barraFill.style.width = '100%';
+          status.textContent = '✅ Imagem enviada!';
+          toast('Imagem enviada com sucesso!');
+        } else {
+          status.textContent = 'Erro no upload.';
+          toast('Erro ao enviar imagem.', true);
+        }
+      };
+
+      xhr.onerror = () => {
+        status.textContent = 'Erro de conexão.';
+        toast('Erro de conexão ao enviar imagem.', true);
+      };
+
+      xhr.send(formData);
+    });
+
+    // ── Proteção de rota
+    onAuthStateChanged(auth, user => {      if (!user) { window.location.href = 'index.html'; return; }
+      document.getElementById('topbar-user').textContent = user.email;
+    });
+
+    // ── Logout
+    document.getElementById('btn-sair').addEventListener('click', () => signOut(auth));
+
+    // ── Toast
+    function toast(msg, erro = false) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.className = 'toast visivel' + (erro ? ' erro' : '');
+      setTimeout(() => el.className = 'toast', 3000);
+    }
+
+    // ── Navegação entre abas
+    const titulos = { pedidos: 'Pedidos', cardapio: 'Cardápio', config: 'Configurações' };
+    document.querySelectorAll('.nav-item').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const aba = btn.dataset.aba;
+        document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('ativo'));
+        document.querySelectorAll('.aba').forEach(a => a.classList.remove('ativa'));
+        btn.classList.add('ativo');
+        document.getElementById('aba-' + aba).classList.add('ativa');
+        document.getElementById('topbar-titulo').textContent = titulos[aba];
+        if (aba === 'config') carregarConfig();
+      });
+    });
+
+    // ════════════════════════════════════════
+    // PEDIDOS
+    // ════════════════════════════════════════
+    let pedidoAtual = null;
+
+    function formatarData(ts) {
+      if (!ts) return '—';
+      const d = ts.toDate ? ts.toDate() : new Date(ts);
+      return d.toLocaleString('pt-BR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' });
+    }
+
+    function badgeStatus(status) {
+      const map = {
+        pendente: 'badge-pendente', pago: 'badge-pago',
+        cancelado: 'badge-cancelado', whatsapp: 'badge-wpp'
+      };
+      const labels = { pendente:'Pendente', pago:'Pago', cancelado:'Cancelado', whatsapp:'WhatsApp' };
+      return `<span class="badge ${map[status] || 'badge-pendente'}">${labels[status] || status}</span>`;
+    }
+
+    function renderizarPedidos(pedidos) {
+      const tbody = document.getElementById('tabela-pedidos-body');
+      if (pedidos.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:#888;">Nenhum pedido encontrado.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = pedidos.map(p => `
+        <tr>
+          <td style="font-size:0.75rem;color:#888;">${p.id.slice(0,8)}</td>
+          <td>${formatarData(p.criadoEm)}</td>
+          <td>${(p.itens || []).map(i => `${i.quantidade}x ${i.nome}`).join(', ').slice(0,40)}...</td>
+          <td style="font-weight:700;color:var(--dourado);">${Number(p.total||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}</td>
+          <td>${badgeStatus(p.status)}</td>
+          <td><button class="btn-ver" onclick="verPedido('${p.id}')">Ver</button></td>
+        </tr>
+      `).join('');
+    }
+
+    function calcularResumo(pedidos) {
+      const hoje = new Date(); hoje.setHours(0,0,0,0);
+      const deHoje = pedidos.filter(p => {
+        const d = p.criadoEm?.toDate ? p.criadoEm.toDate() : new Date(p.criadoEm || 0);
+        return d >= hoje;
+      });
+      document.getElementById('res-hoje').textContent = deHoje.length;
+      document.getElementById('res-pendentes').textContent = pedidos.filter(p => p.status === 'pendente').length;
+      document.getElementById('res-pagos').textContent = pedidos.filter(p => p.status === 'pago').length;
+      const fat = deHoje.filter(p => p.status === 'pago').reduce((s, p) => s + Number(p.total || 0), 0);
+      document.getElementById('res-faturamento').textContent = fat.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    let todosPedidos = [];
+    onSnapshot(query(collection(db, 'pedidos'), orderBy('criadoEm', 'desc')), snap => {
+      todosPedidos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      aplicarFiltro();
+      calcularResumo(todosPedidos);
+    });
+
+    function aplicarFiltro() {
+      const filtro = document.getElementById('filtro-status').value;
+      const filtrados = filtro ? todosPedidos.filter(p => p.status === filtro) : todosPedidos;
+      renderizarPedidos(filtrados);
+    }
+    document.getElementById('filtro-status').addEventListener('change', aplicarFiltro);
+
+    window.verPedido = async (id) => {
+      const snap = await getDoc(doc(db, 'pedidos', id));
+      if (!snap.exists()) return;
+      pedidoAtual = { id, ...snap.data() };
+      const p = pedidoAtual;
+      const itensHtml = (p.itens || []).map(i =>
+        `<li><span>${i.quantidade}x ${i.nome}</span><span>${Number(i.preco*i.quantidade).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}</span></li>`
+      ).join('');
+      document.getElementById('modal-pedido-corpo').innerHTML = `
+        <p style="font-size:0.8rem;color:#888;margin-bottom:1rem;">Pedido: ${id}</p>
+        <p><strong>Status:</strong> ${badgeStatus(p.status)}</p>
+        <p style="margin-top:0.5rem;"><strong>Data:</strong> ${formatarData(p.criadoEm)}</p>
+        ${p.endereco ? `<p style="margin-top:0.5rem;"><strong>Endereço:</strong> ${p.endereco}</p>` : ''}
+        ${p.pagamentoId ? `<p style="margin-top:0.5rem;"><strong>ID Pagamento MP:</strong> ${p.pagamentoId}</p>` : ''}
+        <ul class="pedido-itens">${itensHtml}</ul>
+        <div class="pedido-total"><span>Total</span><span>${Number(p.total||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}</span></div>
+      `;
+      document.getElementById('btn-marcar-pago').style.display = p.status === 'pago' ? 'none' : 'block';
+      document.getElementById('modal-pedido').classList.add('aberto');
+    };
+
+    document.getElementById('btn-fechar-modal-pedido').addEventListener('click', () =>
+      document.getElementById('modal-pedido').classList.remove('aberto'));
+    document.getElementById('btn-fechar-pedido-footer').addEventListener('click', () =>
+      document.getElementById('modal-pedido').classList.remove('aberto'));
+
+    document.getElementById('btn-marcar-pago').addEventListener('click', async () => {
+      if (!pedidoAtual) return;
+      await updateDoc(doc(db, 'pedidos', pedidoAtual.id), { status: 'pago' });
+      toast('Pedido marcado como pago!');
+      document.getElementById('modal-pedido').classList.remove('aberto');
+    });
+
+    // ════════════════════════════════════════
+    // CARDÁPIO ADMIN
+    // ════════════════════════════════════════
+    let pratoEditandoId = null;
+
+    function renderizarPratosAdmin(pratos) {
+      const grid = document.getElementById('pratos-grid-admin');
+      if (pratos.length === 0) {
+        grid.innerHTML = '<p style="color:#888;">Nenhum prato cadastrado. Clique em "+ Novo Prato".</p>';
+        return;
+      }
+      grid.innerHTML = pratos.map(p => `
+        <div class="prato-card-admin">
+          <img src="${p.imagem || '../img/placeholder.svg'}" alt="${p.nome}"
+               onerror="this.src='../img/placeholder.svg'" />
+          <div class="prato-info">
+            <h4>${p.nome}</h4>
+            <p>${p.descricao || ''}</p>
+            <span class="preco">${Number(p.preco||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}</span>
+            <label class="toggle-ativo">
+              <input type="checkbox" ${p.ativo !== false ? 'checked' : ''}
+                     onchange="toggleAtivo('${p.id}', this.checked)" />
+              Visível no cardápio
+            </label>
+            <div class="prato-acoes">
+              <button class="btn-editar" onclick="editarPrato('${p.id}')">✏️ Editar</button>
+              <button class="btn-excluir" onclick="excluirPrato('${p.id}', '${p.nome.replace(/'/g,"\\'")}')">🗑️</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    onSnapshot(query(collection(db, 'pratos'), orderBy('ordem', 'asc')), snap => {
+      const pratos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderizarPratosAdmin(pratos);
+    });
+
+    function abrirModalPrato(prato = null) {
+      pratoEditandoId = prato?.id || null;
+      document.getElementById('modal-prato-titulo').textContent = prato ? 'Editar Prato' : 'Novo Prato';
+      document.getElementById('prato-id').value = prato?.id || '';
+      document.getElementById('prato-nome').value = prato?.nome || '';
+      document.getElementById('prato-descricao').value = prato?.descricao || '';
+      document.getElementById('prato-preco').value = prato?.preco || '';
+      document.getElementById('prato-imagem').value = prato?.imagem || '';
+      document.getElementById('prato-ordem').value = prato?.ordem || 1;
+      document.getElementById('prato-destaque').checked = prato?.destaque || false;
+      document.getElementById('prato-ativo').checked = prato?.ativo !== false;
+      // Reseta área de upload
+      document.getElementById('upload-preview-wrap').style.display = 'none';
+      document.getElementById('upload-progresso').style.display = 'none';
+      document.getElementById('barra-fill').style.width = '0%';
+      document.getElementById('input-foto-upload').value = '';
+      // Se tem imagem, mostra preview
+      if (prato?.imagem) {
+        document.getElementById('upload-preview').src = prato.imagem;
+        document.getElementById('upload-preview-wrap').style.display = 'block';
+      }
+      document.getElementById('modal-prato').classList.add('aberto');
+    }
+
+    document.getElementById('btn-novo-prato').addEventListener('click', () => abrirModalPrato());
+    document.getElementById('btn-fechar-modal-prato').addEventListener('click', () =>
+      document.getElementById('modal-prato').classList.remove('aberto'));
+    document.getElementById('btn-cancelar-prato').addEventListener('click', () =>
+      document.getElementById('modal-prato').classList.remove('aberto'));
+
+    document.getElementById('btn-salvar-prato').addEventListener('click', async () => {
+      const nome = document.getElementById('prato-nome').value.trim();
+      const descricao = document.getElementById('prato-descricao').value.trim();
+      const preco = parseFloat(document.getElementById('prato-preco').value);
+      if (!nome || !descricao || isNaN(preco)) {
+        toast('Preencha nome, descrição e preço.', true); return;
+      }
+      const btn = document.getElementById('btn-salvar-prato');
+      btn.disabled = true; btn.textContent = 'Salvando...';
+      const dados = {
+        nome, descricao, preco,
+        imagem: document.getElementById('prato-imagem').value.trim(),
+        ordem: parseInt(document.getElementById('prato-ordem').value) || 1,
+        destaque: document.getElementById('prato-destaque').checked,
+        ativo: document.getElementById('prato-ativo').checked,
+        atualizadoEm: Timestamp.now()
+      };
+      try {
+        if (pratoEditandoId) {
+          await updateDoc(doc(db, 'pratos', pratoEditandoId), dados);
+          toast('Prato atualizado!');
+        } else {
+          dados.criadoEm = Timestamp.now();
+          await addDoc(collection(db, 'pratos'), dados);
+          toast('Prato adicionado!');
+        }
+        document.getElementById('modal-prato').classList.remove('aberto');
+      } catch (e) {
+        toast('Erro ao salvar prato.', true); console.error(e);
+      } finally {
+        btn.disabled = false; btn.textContent = '💾 Salvar Prato';
+      }
+    });
+
+    window.editarPrato = async (id) => {
+      const snap = await getDoc(doc(db, 'pratos', id));
+      if (snap.exists()) abrirModalPrato({ id, ...snap.data() });
+    };
+
+    window.excluirPrato = async (id, nome) => {
+      if (!confirm(`Excluir "${nome}"? Esta ação não pode ser desfeita.`)) return;
+      await deleteDoc(doc(db, 'pratos', id));
+      toast('Prato excluído.');
+    };
+
+    window.toggleAtivo = async (id, ativo) => {
+      await updateDoc(doc(db, 'pratos', id), { ativo });
+      toast(ativo ? 'Prato ativado.' : 'Prato ocultado.');
+    };
+
+    // ════════════════════════════════════════
+    // CONFIGURAÇÕES
+    // ════════════════════════════════════════
+    async function carregarConfig() {
+      const snap = await getDoc(doc(db, 'config', 'restaurante'));
+      if (!snap.exists()) return;
+      const c = snap.data();
+      document.getElementById('cfg-nome').value = c.nome || '';
+      document.getElementById('cfg-subtitulo').value = c.subtitulo || '';
+      document.getElementById('cfg-telefone').value = c.telefone || '';
+      document.getElementById('cfg-endereco').value = c.endereco || '';
+      document.getElementById('cfg-horarios').value = c.horarios || '';
+      document.getElementById('cfg-instagram').value = c.instagram || '';
+      document.getElementById('cfg-facebook').value = c.facebook || '';
+      document.getElementById('cfg-backend-url').value = c.backendUrl || '';
+    }
+
+    document.getElementById('btn-salvar-info').addEventListener('click', async () => {
+      await setDoc(doc(db, 'config', 'restaurante'), {
+        nome: document.getElementById('cfg-nome').value.trim(),
+        subtitulo: document.getElementById('cfg-subtitulo').value.trim(),
+        telefone: document.getElementById('cfg-telefone').value.trim(),
+        endereco: document.getElementById('cfg-endereco').value.trim(),
+        horarios: document.getElementById('cfg-horarios').value.trim(),
+      }, { merge: true });
+      toast('Informações salvas!');
+    });
+
+    document.getElementById('btn-salvar-redes').addEventListener('click', async () => {
+      await setDoc(doc(db, 'config', 'restaurante'), {
+        instagram: document.getElementById('cfg-instagram').value.trim(),
+        facebook: document.getElementById('cfg-facebook').value.trim(),
+      }, { merge: true });
+      toast('Redes sociais salvas!');
+    });
+
+    document.getElementById('btn-salvar-mp').addEventListener('click', async () => {
+      await setDoc(doc(db, 'config', 'restaurante'), {
+        backendUrl: document.getElementById('cfg-backend-url').value.trim(),
+      }, { merge: true });
+      toast('URL do backend salva!');
+    });
+
+  </script>
+</body>
+</html>

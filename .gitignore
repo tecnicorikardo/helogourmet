@@ -1,0 +1,19 @@
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+
+# Node
+webhook/node_modules/
+node_modules/
+
+# Arquivos de desenvolvimento
+agent.md
+firebase.md
+cardapio/*.md
+SETUP.md
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.log

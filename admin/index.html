@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin – Hélo Gourmet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f0ece3; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .login-card { background: #fff; border-radius: 16px; box-shadow: 0 8px 40px rgba(0,0,0,0.12); padding: 2.5rem 2rem; width: 100%; max-width: 380px; text-align: center; }
+    .login-logo { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .login-card h1 { font-size: 1.4rem; color: #1a3a2a; margin-bottom: 0.3rem; }
+    .login-card p { color: #888; font-size: 0.88rem; margin-bottom: 2rem; }
+    .campo { margin-bottom: 1rem; text-align: left; }
+    .campo label { display: block; font-size: 0.82rem; font-weight: 600; color: #444; margin-bottom: 0.3rem; }
+    .campo input { width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #ddd; border-radius: 8px; font-size: 0.95rem; outline: none; transition: border-color 0.2s; }
+    .campo input:focus { border-color: #1a3a2a; }
+    .btn-login { width: 100%; background: #1a3a2a; color: #fff; font-weight: 700; font-size: 1rem; padding: 0.85rem; border-radius: 50px; border: none; cursor: pointer; margin-top: 0.5rem; transition: background 0.2s; }
+    .btn-login:hover { background: #2a5a40; }
+    .btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
+    .erro-login { color: #c0392b; font-size: 0.85rem; margin-top: 0.8rem; display: none; }
+  </style>
+</head>
+<body>
+  <div class="login-card">
+    <div class="login-logo">🍽️</div>
+    <h1>Hélo Gourmet</h1>
+    <p>Painel Administrativo</p>
+    <form id="form-login">
+      <div class="campo">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" placeholder="admin@helogourmet.com" required autocomplete="email" />
+      </div>
+      <div class="campo">
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" placeholder="••••••••" required autocomplete="current-password" />
+      </div>
+      <button type="submit" class="btn-login" id="btn-login">Entrar</button>
+      <p class="erro-login" id="erro-login"></p>
+    </form>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged }
+      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyARUPJBEiVdkYh6De-H9EYtq6L77vFPs0A",
+      authDomain: "cardapiohelogourmet.firebaseapp.com",
+      projectId: "cardapiohelogourmet",
+      storageBucket: "cardapiohelogourmet.firebasestorage.app",
+      messagingSenderId: "968993366150",
+      appId: "1:968993366150:web:327fb9b8ae9bb58fe7f107"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Se já estiver logado, vai direto pro dashboard
+    onAuthStateChanged(auth, user => {
+      if (user) window.location.href = 'dashboard.html';
+    });
+
+    document.getElementById('form-login').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btn-login');
+      const erroEl = document.getElementById('erro-login');
+      const email = document.getElementById('email').value.trim();
+      const senha = document.getElementById('senha').value;
+
+      btn.disabled = true;
+      btn.textContent = 'Entrando...';
+      erroEl.style.display = 'none';
+
+      try {
+        await signInWithEmailAndPassword(auth, email, senha);
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        const msgs = {
+          'auth/user-not-found': 'Usuário não encontrado.',
+          'auth/wrong-password': 'Senha incorreta.',
+          'auth/invalid-email': 'E-mail inválido.',
+          'auth/too-many-requests': 'Muitas tentativas. Tente mais tarde.',
+          'auth/invalid-credential': 'E-mail ou senha incorretos.'
+        };
+        erroEl.textContent = msgs[err.code] || 'Erro ao fazer login. Tente novamente.';
+        erroEl.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Entrar';
+      }
+    });
+  </script>
+</body>
+</html>

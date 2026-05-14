@@ -1,0 +1,23 @@
+{
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "webhook/**",
+      "cardapio/*.md",
+      "agent.md",
+      "firebase.md"
+    ],
+    "rewrites": [
+      { "source": "/admin", "destination": "/admin/index.html" }
+    ]
+  }
+}
