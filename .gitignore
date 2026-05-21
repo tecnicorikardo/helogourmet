@@ -4,6 +4,10 @@ firebase-debug.log
 firestore-debug.log
 # Service Account — NUNCA commitar
 *firebase-adminsdk*.json
+# Certificados — NUNCA commitar
+*.p12
+*.pem
+cert_b64.txt
 
 # Node
 webhook/node_modules/
