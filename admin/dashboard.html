@@ -114,6 +114,13 @@
     .btn-upload-foto:hover { background:#e8e2d8; border-color:var(--verde); }
     .barra-progresso { width:100%; height:6px; background:#e0dbd0; border-radius:50px; overflow:hidden; }
     .barra-fill { height:100%; background:var(--verde); border-radius:50px; width:0%; transition:width 0.3s; }
+    /* Toggle switch admin */
+    .toggle-switch-admin { position:relative; width:42px; height:24px; flex-shrink:0; }
+    .toggle-switch-admin input { opacity:0; width:0; height:0; position:absolute; }
+    .toggle-slider-admin { position:absolute; inset:0; background:#ccc; border-radius:24px; cursor:pointer; transition:background 0.2s; }
+    .toggle-slider-admin::before { content:''; position:absolute; width:18px; height:18px; left:3px; top:3px; background:#fff; border-radius:50%; transition:transform 0.2s; box-shadow:0 1px 4px rgba(0,0,0,0.2); }
+    .toggle-switch-admin input:checked + .toggle-slider-admin { background:var(--verde); }
+    .toggle-switch-admin input:checked + .toggle-slider-admin::before { transform:translateX(18px); }
     .toast.visivel { transform: translateY(0); opacity: 1; }
     .toast.erro { background: var(--danger); }
 
@@ -223,6 +230,87 @@
 
       <!-- ABA: CONFIGURAÇÕES -->
       <div class="aba" id="aba-config">
+        <div class="config-card">
+          <h3>🖼️ Banner Principal (Hero)</h3>
+          <div class="campo-form">
+            <label>Título do Banner</label>
+            <input type="text" id="cfg-hero-titulo" placeholder="Ex: &lt;em&gt;Cardápio Digital&lt;/em&gt;&lt;br&gt;Hélo Gourmet" />
+            <p class="hint">Você pode usar &lt;em&gt;texto&lt;/em&gt; para dourado e &lt;br&gt; para quebrar linha.</p>
+          </div>
+          <div class="campo-form">
+            <label>Subtítulo do Banner</label>
+            <input type="text" id="cfg-hero-subtitulo" placeholder="Ex: Pratos preparados na hora com ingredientes frescos." />
+          </div>
+          <div class="campo-form">
+            <label>Foto de Fundo do Banner</label>
+            <div style="margin-bottom:0.6rem;">
+              <div id="hero-preview-wrap" style="display:none;margin-bottom:0.8rem;">
+                <img id="hero-preview" src="" alt="Preview hero" style="width:100%;height:140px;object-fit:cover;border-radius:8px;" />
+              </div>
+              <label class="btn-upload-foto" for="input-hero-upload">📷 Escolher foto de fundo</label>
+              <input type="file" id="input-hero-upload" accept="image/*" style="display:none;" />
+              <div id="hero-upload-progresso" style="display:none;margin-top:0.6rem;">
+                <div class="barra-progresso"><div class="barra-fill" id="hero-barra-fill"></div></div>
+                <p class="hint" id="hero-upload-status">Enviando...</p>
+              </div>
+            </div>
+            <p class="hint">Ou cole uma URL diretamente:</p>
+            <input type="url" id="cfg-hero-imagem" placeholder="https://..." style="margin-top:0.4rem;" />
+          </div>
+          <button class="btn-salvar-config" id="btn-salvar-hero">💾 Salvar Banner</button>
+        </div>
+
+        <div class="config-card">
+          <h3>🍽️ Fotos Decorativas do Cardápio</h3>
+          <p class="hint" style="margin-bottom:1rem;">Use imagens PNG com fundo transparente para melhor efeito. Aparecem nas laterais do título "Cardápio".</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+            <div class="campo-form">
+              <label>Foto Esquerda</label>
+              <div id="deco1-preview-wrap" style="display:none;margin-bottom:0.5rem;">
+                <img id="deco1-preview" src="" style="width:100%;height:100px;object-fit:contain;border-radius:8px;background:#f0ece3;" />
+              </div>
+              <label class="btn-upload-foto" for="input-deco1-upload" style="font-size:0.78rem;padding:0.5rem;">📷 Escolher foto</label>
+              <input type="file" id="input-deco1-upload" accept="image/*" style="display:none;" />
+              <div id="deco1-progresso" style="display:none;margin-top:0.4rem;">
+                <div class="barra-progresso"><div class="barra-fill" id="deco1-barra"></div></div>
+                <p class="hint" id="deco1-status">Enviando...</p>
+              </div>
+              <input type="url" id="cfg-foto-deco1" placeholder="URL da imagem..." style="margin-top:0.4rem;" />
+              <label style="margin-top:0.6rem;display:block;font-size:0.78rem;font-weight:600;color:#444;">Tamanho: <span id="deco1-tamanho-val">180</span>px</label>
+              <input type="range" id="cfg-deco1-tamanho" min="80" max="400" value="180" step="10"
+                     style="width:100%;margin-top:0.3rem;accent-color:var(--verde);" />
+            </div>
+            <div class="campo-form">
+              <label>Foto Direita</label>
+              <div id="deco2-preview-wrap" style="display:none;margin-bottom:0.5rem;">
+                <img id="deco2-preview" src="" style="width:100%;height:100px;object-fit:contain;border-radius:8px;background:#f0ece3;" />
+              </div>
+              <label class="btn-upload-foto" for="input-deco2-upload" style="font-size:0.78rem;padding:0.5rem;">📷 Escolher foto</label>
+              <input type="file" id="input-deco2-upload" accept="image/*" style="display:none;" />
+              <div id="deco2-progresso" style="display:none;margin-top:0.4rem;">
+                <div class="barra-progresso"><div class="barra-fill" id="deco2-barra"></div></div>
+                <p class="hint" id="deco2-status">Enviando...</p>
+              </div>
+              <input type="url" id="cfg-foto-deco2" placeholder="URL da imagem..." style="margin-top:0.4rem;" />
+              <label style="margin-top:0.6rem;display:block;font-size:0.78rem;font-weight:600;color:#444;">Tamanho: <span id="deco2-tamanho-val">180</span>px</label>
+              <input type="range" id="cfg-deco2-tamanho" min="80" max="400" value="180" step="10"
+                     style="width:100%;margin-top:0.3rem;accent-color:var(--verde);" />
+            </div>
+          </div>
+          <div class="campo-form" style="margin-top:1rem;">
+            <label style="display:flex;align-items:center;gap:0.75rem;cursor:pointer;">
+              <div class="toggle-switch-admin">
+                <input type="checkbox" id="cfg-efeito-imagens" />
+                <span class="toggle-slider-admin"></span>
+              </div>
+              <div>
+                <span style="font-size:0.88rem;font-weight:600;color:#444;">Ativar efeito hover nas imagens</span>
+                <p class="hint" style="margin-top:2px;">Leve brilho ao passar o mouse. Aplicado no site do cliente.</p>
+              </div>
+            </label>
+          </div>
+          <button class="btn-salvar-config" id="btn-salvar-deco">💾 Salvar Fotos Decorativas</button>
+        </div>
         <div class="config-card">
           <h3>📱 Informações do Restaurante</h3>
           <div class="campo-form">
@@ -348,6 +436,7 @@
       <div class="modal-footer">
         <button class="btn-cancelar" id="btn-fechar-pedido-footer">Fechar</button>
         <button class="btn-salvar" id="btn-marcar-pago" style="background:#27ae60;">✅ Marcar como Pago</button>
+        <button class="btn-salvar" id="btn-cancelar-pedido" style="background:#c0392b;">❌ Cancelar Pedido</button>
       </div>
     </div>
   </div>
@@ -551,7 +640,10 @@
         <ul class="pedido-itens">${itensHtml}</ul>
         <div class="pedido-total"><span>Total</span><span>${Number(p.total||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}</span></div>
       `;
-      document.getElementById('btn-marcar-pago').style.display = p.status === 'pago' ? 'none' : 'block';
+      document.getElementById('btn-marcar-pago').style.display =
+        p.status === 'pago' ? 'none' : 'block';
+      document.getElementById('btn-cancelar-pedido').style.display =
+        (p.status === 'cancelado' || p.status === 'pago') ? 'none' : 'block';
       document.getElementById('modal-pedido').classList.add('aberto');
     };
 
@@ -564,6 +656,17 @@
       if (!pedidoAtual) return;
       await updateDoc(doc(db, 'pedidos', pedidoAtual.id), { status: 'pago' });
       toast('Pedido marcado como pago!');
+      document.getElementById('modal-pedido').classList.remove('aberto');
+    });
+
+    document.getElementById('btn-cancelar-pedido').addEventListener('click', async () => {
+      if (!pedidoAtual) return;
+      if (!confirm(`Cancelar o pedido #${pedidoAtual.id.slice(0,8)}? Esta ação não pode ser desfeita.`)) return;
+      await updateDoc(doc(db, 'pedidos', pedidoAtual.id), {
+        status: 'cancelado',
+        canceladoEm: Timestamp.now()
+      });
+      toast('Pedido cancelado.');
       document.getElementById('modal-pedido').classList.remove('aberto');
     });
 
@@ -692,6 +795,13 @@
       const snap = await getDoc(doc(db, 'config', 'restaurante'));
       if (!snap.exists()) return;
       const c = snap.data();
+      document.getElementById('cfg-hero-titulo').value = c.heroTitulo || '';
+      document.getElementById('cfg-hero-subtitulo').value = c.heroSubtitulo || '';
+      document.getElementById('cfg-hero-imagem').value = c.heroImagem || '';
+      if (c.heroImagem) {
+        document.getElementById('hero-preview').src = c.heroImagem;
+        document.getElementById('hero-preview-wrap').style.display = 'block';
+      }
       document.getElementById('cfg-nome').value = c.nome || '';
       document.getElementById('cfg-subtitulo').value = c.subtitulo || '';
       document.getElementById('cfg-telefone').value = c.telefone || '';
@@ -700,10 +810,136 @@
       document.getElementById('cfg-instagram').value = c.instagram || '';
       document.getElementById('cfg-facebook').value = c.facebook || '';
       document.getElementById('cfg-backend-url').value = c.backendUrl || '';
+      // Fotos decorativas
+      document.getElementById('cfg-foto-deco1').value = c.fotoDeco1 || '';
+      document.getElementById('cfg-foto-deco2').value = c.fotoDeco2 || '';
+      if (c.fotoDeco1Tamanho) {
+        document.getElementById('cfg-deco1-tamanho').value = c.fotoDeco1Tamanho;
+        document.getElementById('deco1-tamanho-val').textContent = c.fotoDeco1Tamanho;
+      }
+      if (c.fotoDeco2Tamanho) {
+        document.getElementById('cfg-deco2-tamanho').value = c.fotoDeco2Tamanho;
+        document.getElementById('deco2-tamanho-val').textContent = c.fotoDeco2Tamanho;
+      }
+      document.getElementById('cfg-efeito-imagens').checked = c.efeitoImagens || false;
+      if (c.fotoDeco1) { document.getElementById('deco1-preview').src = c.fotoDeco1; document.getElementById('deco1-preview-wrap').style.display = 'block'; }
+      if (c.fotoDeco2) { document.getElementById('deco2-preview').src = c.fotoDeco2; document.getElementById('deco2-preview-wrap').style.display = 'block'; }
     }
 
-    document.getElementById('btn-salvar-info').addEventListener('click', async () => {
+    // ── Upload hero via Cloudinary
+    document.getElementById('input-hero-upload').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        document.getElementById('hero-preview').src = ev.target.result;
+        document.getElementById('hero-preview-wrap').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+      const progresso = document.getElementById('hero-upload-progresso');
+      const barraFill = document.getElementById('hero-barra-fill');
+      const status = document.getElementById('hero-upload-status');
+      progresso.style.display = 'block';
+      barraFill.style.width = '0%';
+      status.textContent = 'Enviando...';
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'cardapio_upload');
+      formData.append('folder', 'cardapio/hero');
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', 'https://api.cloudinary.com/v1_1/du8sfxuqx/image/upload');
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const pct = Math.round((e.loaded / e.total) * 100);
+          barraFill.style.width = pct + '%';
+          status.textContent = `Enviando... ${pct}%`;
+        }
+      };
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          const resp = JSON.parse(xhr.responseText);
+          document.getElementById('cfg-hero-imagem').value = resp.secure_url;
+          barraFill.style.width = '100%';
+          status.textContent = '✅ Foto enviada!';
+          toast('Foto do banner enviada!');
+        } else {
+          status.textContent = 'Erro no upload.';
+          toast('Erro ao enviar foto.', true);
+        }
+      };
+      xhr.onerror = () => { status.textContent = 'Erro de conexão.'; toast('Erro de conexão.', true); };
+      xhr.send(formData);
+    });
+
+    // ── Helper upload Cloudinary genérico
+    function uploadCloudinary(file, inputId, previewId, wrapId, progressoId, barraId, statusId) {
+      const reader = new FileReader();
+      reader.onload = ev => {
+        document.getElementById(previewId).src = ev.target.result;
+        document.getElementById(wrapId).style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+      const progresso = document.getElementById(progressoId);
+      const barra = document.getElementById(barraId);
+      const status = document.getElementById(statusId);
+      progresso.style.display = 'block'; barra.style.width = '0%'; status.textContent = 'Enviando...';
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'cardapio_upload');
+      formData.append('folder', 'cardapio');
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', 'https://api.cloudinary.com/v1_1/du8sfxuqx/image/upload');
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) { const p = Math.round(e.loaded/e.total*100); barra.style.width=p+'%'; status.textContent=`Enviando... ${p}%`; }
+      };
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          const url = JSON.parse(xhr.responseText).secure_url;
+          document.getElementById(inputId).value = url;
+          barra.style.width = '100%'; status.textContent = '✅ Enviado!';
+          toast('Imagem enviada!');
+        } else { status.textContent = 'Erro.'; toast('Erro ao enviar.', true); }
+      };
+      xhr.onerror = () => { status.textContent = 'Erro de conexão.'; toast('Erro.', true); };
+      xhr.send(formData);
+    }
+
+    document.getElementById('input-deco1-upload').addEventListener('change', (e) => {
+      if (e.target.files[0]) uploadCloudinary(e.target.files[0], 'cfg-foto-deco1', 'deco1-preview', 'deco1-preview-wrap', 'deco1-progresso', 'deco1-barra', 'deco1-status');
+    });
+    document.getElementById('input-deco2-upload').addEventListener('change', (e) => {
+      if (e.target.files[0]) uploadCloudinary(e.target.files[0], 'cfg-foto-deco2', 'deco2-preview', 'deco2-preview-wrap', 'deco2-progresso', 'deco2-barra', 'deco2-status');
+    });
+
+    // Sliders de tamanho — atualiza label em tempo real
+    document.getElementById('cfg-deco1-tamanho').addEventListener('input', (e) => {
+      document.getElementById('deco1-tamanho-val').textContent = e.target.value;
+    });
+    document.getElementById('cfg-deco2-tamanho').addEventListener('input', (e) => {
+      document.getElementById('deco2-tamanho-val').textContent = e.target.value;
+    });
+
+    document.getElementById('btn-salvar-deco').addEventListener('click', async () => {
       await setDoc(doc(db, 'config', 'restaurante'), {
+        fotoDeco1: document.getElementById('cfg-foto-deco1').value.trim(),
+        fotoDeco2: document.getElementById('cfg-foto-deco2').value.trim(),
+        fotoDeco1Tamanho: parseInt(document.getElementById('cfg-deco1-tamanho').value),
+        fotoDeco2Tamanho: parseInt(document.getElementById('cfg-deco2-tamanho').value),
+        efeitoImagens: document.getElementById('cfg-efeito-imagens').checked,
+      }, { merge: true });
+      toast('Fotos decorativas salvas!');
+    });
+
+    // ── Salvar hero
+    document.getElementById('btn-salvar-hero').addEventListener('click', async () => {      await setDoc(doc(db, 'config', 'restaurante'), {
+        heroTitulo: document.getElementById('cfg-hero-titulo').value.trim(),
+        heroSubtitulo: document.getElementById('cfg-hero-subtitulo').value.trim(),
+        heroImagem: document.getElementById('cfg-hero-imagem').value.trim(),
+      }, { merge: true });
+      toast('Banner salvo!');
+    });
+
+    document.getElementById('btn-salvar-info').addEventListener('click', async () => {      await setDoc(doc(db, 'config', 'restaurante'), {
         nome: document.getElementById('cfg-nome').value.trim(),
         subtitulo: document.getElementById('cfg-subtitulo').value.trim(),
         telefone: document.getElementById('cfg-telefone').value.trim(),

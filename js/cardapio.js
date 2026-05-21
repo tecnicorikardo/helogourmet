@@ -23,7 +23,7 @@ async function carregarConfig() {
   }
 }
 
-// ── Aplica config no site (telefone WhatsApp, endereço, horários)
+// ── Aplica config no site (telefone WhatsApp, endereço, horários, hero)
 function aplicarConfig(config) {
   // Telefone nos botões WhatsApp
   if (config.telefone) {
@@ -41,10 +41,62 @@ function aplicarConfig(config) {
   // Nome do restaurante
   if (config.nome) {
     document.querySelectorAll('.nome-restaurante').forEach(el => el.textContent = config.nome);
+    document.title = config.nome + ' | Cardápio Digital';
   }
-  // Subtítulo
+  // Subtítulo header
   if (config.subtitulo) {
     document.querySelectorAll('.subtitulo-restaurante').forEach(el => el.textContent = config.subtitulo);
+  }
+  // ── HERO
+  if (config.heroTitulo) {
+    const el = document.getElementById('hero-titulo');
+    if (el) el.innerHTML = config.heroTitulo;
+  }
+  if (config.heroSubtitulo) {
+    const el = document.getElementById('hero-subtitulo');
+    if (el) el.textContent = config.heroSubtitulo;
+  }
+  if (config.heroImagem) {
+    const hero = document.getElementById('hero-section');
+    if (hero) {
+      hero.style.backgroundImage = `linear-gradient(rgba(26,58,42,0.72), rgba(26,58,42,0.72)), url('${config.heroImagem}')`;
+    }
+  }
+  // Efeito hover nas imagens decorativas — controlado pelo admin
+  if (config.efeitoImagens) {
+    document.body.classList.add('efeito-ativo');
+  } else {
+    document.body.classList.remove('efeito-ativo');
+  }
+  if (config.instagram) {
+    const el = document.getElementById('link-instagram');
+    if (el) el.href = config.instagram;
+  }
+  if (config.backendUrl) {
+    window._backendUrl = config.backendUrl;
+  }
+  // Fotos decorativas laterais
+  const t1 = config.fotoDeco1Tamanho || (config.fotoDeco1 ? 180 : 0);
+  const t2 = config.fotoDeco2Tamanho || (config.fotoDeco2 ? 180 : 0);
+
+  if (config.fotoDeco1) {
+    const el = document.getElementById('foto-deco-esquerda');
+    if (el) {
+      el.src = config.fotoDeco1;
+      el.style.display = 'block';
+      // Usa função global que respeita viewport
+      if (window.aplicarTamanhoFoto) window.aplicarTamanhoFoto('foto-deco-esquerda', t1);
+      else el.style.width = t1 + 'px';
+    }
+  }
+  if (config.fotoDeco2) {
+    const el = document.getElementById('foto-deco-direita');
+    if (el) {
+      el.src = config.fotoDeco2;
+      el.style.display = 'block';
+      if (window.aplicarTamanhoFoto) window.aplicarTamanhoFoto('foto-deco-direita', t2);
+      else el.style.width = t2 + 'px';
+    }
   }
 }
 
@@ -153,7 +205,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.open(carrinho.textoWhatsApp(tel, endereco), '_blank');
   });
 
-  // Botão finalizar via Mercado Pago
+  // Botão finalizar via Mercado Pago (Checkout Pro com Pix preferencial)
   document.getElementById('btn-pagar-online')?.addEventListener('click', async () => {
     if (carrinho.itens.length === 0) {
       alert('Adicione pelo menos um prato ao carrinho.');
@@ -161,30 +213,108 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     const btn = document.getElementById('btn-pagar-online');
     btn.disabled = true;
-    btn.textContent = 'Aguarde...';
+    btn.textContent = '⏳ Conectando...';
+
+    const backendUrl = window._backendUrl || 'https://helogourmet-backend.onrender.com';
+
+    // Acorda o backend se estiver dormindo
+    try {
+      await fetch(`${backendUrl}/`, { signal: AbortSignal.timeout(60000) });
+    } catch(e) { /* ignora */ }
+
+    btn.textContent = '🔄 Gerando link...';
 
     try {
-      // Chama o backend (Render) para criar preferência de pagamento
-      const resp = await fetch(`${window._backendUrl}/criar-pagamento`, {
+      const resp = await fetch(`${backendUrl}/criar-pix`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           itens: carrinho.itens,
           total: carrinho.total()
-        })
+        }),
+        signal: AbortSignal.timeout(60000)
       });
+
+      const contentType = resp.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        throw new Error(`Servidor indisponível (${resp.status}). Tente novamente.`);
+      }
+
       const data = await resp.json();
-      if (data.init_point) {
-        window.location.href = data.init_point; // redireciona para MP
+
+      if (data.qrCode) {
+        // Mostra área do Pix
+        document.getElementById('pix-area').style.display = 'block';
+        document.getElementById('pix-codigo').value = data.qrCode;
+        if (data.qrCodeBase64) {
+          document.getElementById('pix-qrcode-img').src =
+            `data:image/png;base64,${data.qrCodeBase64}`;
+        }
+        btn.textContent = '🔄 Gerar novo Pix';
+        btn.disabled = false;
+        window._pixTxid    = data.txid;
+        window._pixPedidoId = data.pedidoId;
+        iniciarPollingPix(data.txid, data.pedidoId);
+        // Rola para mostrar o QR Code
+        setTimeout(() => {
+          document.getElementById('pix-area')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 200);
       } else {
-        throw new Error('Link de pagamento não gerado');
+        throw new Error(data.erro || 'QR Code não gerado.');
       }
     } catch (e) {
-      alert('Erro ao iniciar pagamento. Tente pelo WhatsApp.');
+      const msg = e.name === 'TimeoutError'
+        ? 'Servidor demorou para responder. Aguarde 1 minuto e tente novamente.'
+        : e.message || 'Erro ao iniciar pagamento.';
+      alert(msg);
       console.error(e);
-    } finally {
       btn.disabled = false;
       btn.textContent = '💳 Pagar Online';
     }
   });
+
+  // Copiar código Pix
+  document.getElementById('btn-copiar-pix')?.addEventListener('click', () => {
+    const codigo = document.getElementById('pix-codigo').value;
+    navigator.clipboard.writeText(codigo).then(() => {
+      const btn = document.getElementById('btn-copiar-pix');
+      btn.textContent = '✅ Copiado!';
+      setTimeout(() => btn.textContent = '📋 Copiar código Pix', 2000);
+    });
+  });
 });
+
+// ── Polling: verifica status do Pix a cada 5 segundos
+let _pollingTimer = null;
+function iniciarPollingPix(txid, pedidoId) {
+  if (_pollingTimer) clearInterval(_pollingTimer);
+  const statusMsg = document.getElementById('pix-status-msg');
+  let tentativas = 0;
+  const maxTentativas = 72; // 6 minutos
+
+  _pollingTimer = setInterval(async () => {
+    tentativas++;
+    if (tentativas > maxTentativas) {
+      clearInterval(_pollingTimer);
+      if (statusMsg) statusMsg.textContent = '⏰ Pix expirado. Gere um novo.';
+      return;
+    }
+    try {
+      const backendUrl = window._backendUrl || 'https://helogourmet-backend.onrender.com';
+      const resp = await fetch(`${backendUrl}/status-pix/${txid}`);
+      const data = await resp.json();
+      if (data.status === 'approved') {
+        clearInterval(_pollingTimer);
+        if (statusMsg) statusMsg.textContent = '✅ Pix confirmado!';
+        setTimeout(() => {
+          window.location.href =
+            `/sucesso.html?payment_id=${txid}&external_reference=${pedidoId}&collection_status=approved`;
+        }, 1500);
+      } else {
+        if (statusMsg) statusMsg.textContent = `⏳ Aguardando pagamento... (${tentativas * 5}s)`;
+      }
+    } catch (e) {
+      console.warn('Erro ao verificar Pix:', e);
+    }
+  }, 5000);
+}

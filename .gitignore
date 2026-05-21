@@ -2,6 +2,8 @@
 .firebase/
 firebase-debug.log
 firestore-debug.log
+# Service Account — NUNCA commitar
+*firebase-adminsdk*.json
 
 # Node
 webhook/node_modules/

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pagamento não realizado – Hélo Gourmet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f9f7f2; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+    .card { background: #fff; border-radius: 20px; box-shadow: 0 8px 40px rgba(0,0,0,0.1); padding: 2.5rem 2rem; max-width: 420px; width: 100%; text-align: center; }
+    .icone { width: 72px; height: 72px; background: #fee2e2; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1.2rem; }
+    h1 { font-family: 'Playfair Display', serif; color: #1a3a2a; font-size: 1.5rem; margin-bottom: 0.5rem; }
+    p { color: #6b6b6b; font-size: 0.95rem; line-height: 1.5; margin-bottom: 1.2rem; }
+    .btns { display: flex; flex-direction: column; gap: 0.7rem; }
+    a.btn-wpp { display: flex; align-items: center; justify-content: center; gap: 0.5rem; background: #25d366; color: #fff; font-weight: 700; padding: 0.85rem; border-radius: 50px; text-decoration: none; }
+    a.btn-voltar { display: block; color: #1a3a2a; font-size: 0.88rem; text-decoration: none; opacity: 0.7; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icone">❌</div>
+    <h1>Pagamento não realizado</h1>
+    <p>Houve um problema com seu pagamento. Tente novamente ou finalize pelo WhatsApp.</p>
+    <div class="btns">
+      <a href="#" class="btn-wpp" id="btn-wpp-erro">🟢 Finalizar pelo WhatsApp</a>
+      <a href="/" class="btn-voltar">← Voltar ao Cardápio</a>
+    </div>
+  </div>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    const app = initializeApp({ apiKey:"AIzaSyARUPJBEiVdkYh6De-H9EYtq6L77vFPs0A", authDomain:"cardapiohelogourmet.firebaseapp.com", projectId:"cardapiohelogourmet", appId:"1:968993366150:web:327fb9b8ae9bb58fe7f107" });
+    const db = getFirestore(app);
+    getDoc(doc(db, 'config', 'restaurante')).then(snap => {
+      if (snap.exists() && snap.data().telefone) {
+        const tel = snap.data().telefone.replace(/\D/g, '');
+        document.getElementById('btn-wpp-erro').href = `https://wa.me/${tel}?text=${encodeURIComponent('Olá! Tive um problema no pagamento online e gostaria de finalizar meu pedido pelo WhatsApp.')}`;
+      }
+    });
+  </script>
+</body>
+</html>
