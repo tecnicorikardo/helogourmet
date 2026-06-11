@@ -7,9 +7,37 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { carrinho } from './carrinho.js';
 
+const BACKEND_URL_PADRAO = 'https://helogourmet-backend.onrender.com';
+const PIX_REQUEST_TIMEOUT_MS = 90000;
+const BACKEND_WARMUP_TIMEOUT_MS = 12000;
+const PIX_STATUS_TIMEOUT_MS = 15000;
+
 // Expõe funções do carrinho globalmente para uso nos botões inline
 window.carrinhoAdicionar = (prato) => carrinho.adicionar(prato);
 window.carrinhoRemover = (id) => carrinho.remover(id);
+
+function obterBackendUrl() {
+  return (window._backendUrl || BACKEND_URL_PADRAO).replace(/\/+$/, '');
+}
+
+function fetchComTimeout(url, options = {}, timeoutMs = PIX_REQUEST_TIMEOUT_MS) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+  return fetch(url, { ...options, signal: controller.signal })
+    .finally(() => clearTimeout(timeout));
+}
+
+let backendAquecimentoIniciado = false;
+function aquecerBackendPix() {
+  if (backendAquecimentoIniciado) return;
+  backendAquecimentoIniciado = true;
+
+  fetchComTimeout(`${obterBackendUrl()}/`, {}, BACKEND_WARMUP_TIMEOUT_MS)
+    .catch(() => {
+      backendAquecimentoIniciado = false;
+    });
+}
 
 // ── Carrega configurações do restaurante (telefone, endereço, etc.)
 async function carregarConfig() {
@@ -147,17 +175,37 @@ function carregarPratos() {
       return;
     }
 
-    const pratos = [];
+    // Separa por categoria: pratos primeiro, sobremesas depois
+    const pratos     = [];
+    const sobremesas = [];
+    const outros     = [];
+
     snapshot.forEach(docSnap => {
       const prato = docSnap.data();
-      if (prato.ativo !== false) { // mostra todos exceto os marcados como inativos
-        pratos.push(criarCardPrato(docSnap.id, prato));
-      }
+      if (prato.ativo === false) return;
+      const cat = (prato.categoria || 'prato').toLowerCase();
+      const card = criarCardPrato(docSnap.id, prato);
+      if (cat === 'sobremesa' || cat === 'sobremesas') sobremesas.push(card);
+      else if (cat === 'bebida' || cat === 'bebidas') outros.push(card);
+      else pratos.push(card);
     });
 
-    grid.innerHTML = pratos.length > 0
-      ? pratos.join('')
-      : '<p class="sem-pratos">Nenhum prato disponível no momento.</p>';
+    let html = '';
+
+    if (pratos.length > 0) {
+      html += `<div class="categoria-titulo"><span>🍽️ Pratos</span></div>`;
+      html += `<div class="grid-cards-inner">${pratos.join('')}</div>`;
+    }
+    if (sobremesas.length > 0) {
+      html += `<div class="categoria-titulo"><span>🍮 Sobremesas</span></div>`;
+      html += `<div class="grid-cards-inner">${sobremesas.join('')}</div>`;
+    }
+    if (outros.length > 0) {
+      html += `<div class="categoria-titulo"><span>🥤 Bebidas</span></div>`;
+      html += `<div class="grid-cards-inner">${outros.join('')}</div>`;
+    }
+
+    grid.innerHTML = html || '<p class="sem-pratos">Nenhum prato disponível no momento.</p>';
   }, (error) => {
     console.error('Erro ao carregar pratos:', error);
     grid.innerHTML = '<p class="erro-pratos">Erro ao carregar o cardápio. Tente novamente.</p>';
@@ -170,6 +218,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const config = await carregarConfig();
   aplicarConfig(config);
+  setTimeout(aquecerBackendPix, 800);
 
   carregarPratos();
 
@@ -201,11 +250,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
     const endereco = document.getElementById('input-endereco')?.value || '';
-    const tel = window._telefoneWpp || '5500000000000';
+    const tel = window._telefoneWpp || '5521976528124';
     window.open(carrinho.textoWhatsApp(tel, endereco), '_blank');
   });
 
-  // Botão finalizar via Mercado Pago (Checkout Pro com Pix preferencial)
+  // Botão finalizar via Pix
   document.getElementById('btn-pagar-online')?.addEventListener('click', async () => {
     if (carrinho.itens.length === 0) {
       alert('Adicione pelo menos um prato ao carrinho.');
@@ -213,27 +262,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     const btn = document.getElementById('btn-pagar-online');
     btn.disabled = true;
-    btn.textContent = '⏳ Conectando...';
-
-    const backendUrl = window._backendUrl || 'https://helogourmet-backend.onrender.com';
-
-    // Acorda o backend se estiver dormindo
-    try {
-      await fetch(`${backendUrl}/`, { signal: AbortSignal.timeout(60000) });
-    } catch(e) { /* ignora */ }
-
-    btn.textContent = '🔄 Gerando link...';
+    btn.textContent = '🔄 Gerando Pix...';
 
     try {
-      const resp = await fetch(`${backendUrl}/criar-pix`, {
+      const resp = await fetchComTimeout(`${obterBackendUrl()}/criar-pix`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           itens: carrinho.itens,
           total: carrinho.total()
-        }),
-        signal: AbortSignal.timeout(60000)
-      });
+        })
+      }, PIX_REQUEST_TIMEOUT_MS);
 
       const contentType = resp.headers.get('content-type') || '';
       if (!contentType.includes('application/json')) {
@@ -263,8 +302,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         throw new Error(data.erro || 'QR Code não gerado.');
       }
     } catch (e) {
-      const msg = e.name === 'TimeoutError'
-        ? 'Servidor demorou para responder. Aguarde 1 minuto e tente novamente.'
+      const msg = e.name === 'AbortError'
+        ? 'Servidor demorou para responder. Tente novamente em alguns instantes.'
         : e.message || 'Erro ao iniciar pagamento.';
       alert(msg);
       console.error(e);
@@ -300,8 +339,7 @@ function iniciarPollingPix(txid, pedidoId) {
       return;
     }
     try {
-      const backendUrl = window._backendUrl || 'https://helogourmet-backend.onrender.com';
-      const resp = await fetch(`${backendUrl}/status-pix/${txid}`);
+      const resp = await fetchComTimeout(`${obterBackendUrl()}/status-pix/${txid}`, {}, PIX_STATUS_TIMEOUT_MS);
       const data = await resp.json();
       if (data.status === 'approved') {
         clearInterval(_pollingTimer);

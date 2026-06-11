@@ -350,7 +350,7 @@
         </div>
 
         <div class="config-card">
-          <h3>💳 Mercado Pago</h3>
+          <h3>💳 Pix (Efí Bank)</h3>
           <div class="campo-form">
             <label>URL do Backend (Render)</label>
             <input type="url" id="cfg-backend-url" placeholder="https://seu-backend.onrender.com" />
@@ -372,6 +372,14 @@
       </div>
       <div class="modal-corpo">
         <input type="hidden" id="prato-id" />
+        <div class="campo-form">
+          <label>Categoria *</label>
+          <select id="prato-categoria">
+            <option value="prato">🍽️ Prato Principal</option>
+            <option value="sobremesa">🍮 Sobremesa</option>
+            <option value="bebida">🥤 Bebida</option>
+          </select>
+        </div>
         <div class="campo-form">
           <label>Nome do Prato *</label>
           <input type="text" id="prato-nome" placeholder="Ex: Filé de Frango Empanado" required />
@@ -686,7 +694,7 @@
           <img src="${p.imagem || '../img/placeholder.svg'}" alt="${p.nome}"
                onerror="this.src='../img/placeholder.svg'" />
           <div class="prato-info">
-            <h4>${p.nome}</h4>
+            <h4>${p.nome} <small style="font-size:0.7rem;color:#888;font-weight:400;">${p.categoria === 'sobremesa' ? '🍮 Sobremesa' : p.categoria === 'bebida' ? '🥤 Bebida' : '🍽️ Prato'}</small></h4>
             <p>${p.descricao || ''}</p>
             <span class="preco">${Number(p.preco||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}</span>
             <label class="toggle-ativo">
@@ -711,7 +719,7 @@
     function abrirModalPrato(prato = null) {
       pratoEditandoId = prato?.id || null;
       document.getElementById('modal-prato-titulo').textContent = prato ? 'Editar Prato' : 'Novo Prato';
-      document.getElementById('prato-id').value = prato?.id || '';
+      document.getElementById('prato-categoria').value = prato?.categoria || 'prato';
       document.getElementById('prato-nome').value = prato?.nome || '';
       document.getElementById('prato-descricao').value = prato?.descricao || '';
       document.getElementById('prato-preco').value = prato?.preco || '';
@@ -749,6 +757,7 @@
       btn.disabled = true; btn.textContent = 'Salvando...';
       const dados = {
         nome, descricao, preco,
+        categoria: document.getElementById('prato-categoria').value,
         imagem: document.getElementById('prato-imagem').value.trim(),
         ordem: parseInt(document.getElementById('prato-ordem').value) || 1,
         destaque: document.getElementById('prato-destaque').checked,
