@@ -296,7 +296,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         iniciarPollingPix(data.txid, data.pedidoId);
         // Rola para mostrar o QR Code
         setTimeout(() => {
-          document.getElementById('pix-area')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          const drawer = document.getElementById('carrinho-drawer');
+          drawer?.scrollTo({ top: drawer.scrollHeight, behavior: 'smooth' });
         }, 200);
       } else {
         throw new Error(data.erro || 'QR Code não gerado.');
